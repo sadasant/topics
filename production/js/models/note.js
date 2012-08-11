@@ -1,0 +1,1 @@
+define("NoteModel",["jquery","underscore","backbone"],function(e,t,n){var r;return r=n.Model.extend({urlRoot:"api/1/note",idAttribute:"_id",defaults:{text:"",user_id:"",topic_id:""},validate:function(e){if(!e.text||e.text.length>2024)return"Invalid Note Text";if(!e.user_id)return"Invalid User ID";if(!e.topic_id)return"Invalid Topic ID"}}),r})

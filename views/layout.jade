@@ -1,0 +1,34 @@
+// topics
+// by Daniel Rodríguez
+// MIT Licensed
+
+doctype 5
+html
+  head
+    title topics
+    link(rel='stylesheet', href='/css/style.css')
+    link(rel='stylesheet', href='/css/highlight.css')
+    link(href='http://fonts.googleapis.com/css?family=Quando', rel='stylesheet', type='text/css')
+    script
+      if (!window.console) {
+        alert('Because you deserve a better browser:')
+        window.location = 'http://whichbrowserforme.org/'
+      }
+    script(data-main="js/main", src="/js/require.js")
+    script(data-main="js/main", src="/js/lib/highlight.pack.js")
+  body
+    #box
+      block content
+    #by
+      | by 
+      a(href="http://sadasant.com/", target="_blank", rel="nofollow") Daniel Rodríguez
+
+  script
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-26305634-2']);
+    _gaq.push(['_trackPageview']);
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();

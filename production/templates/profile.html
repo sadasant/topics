@@ -1,0 +1,32 @@
+<div id="profile">
+  <div id="header">
+    <div class="title">
+      <a href="/">topics</a>
+    </div>
+    <div class="user">
+      <a href="/">@<%= user.screen_name%></a>
+      <div class="bye">X</div>
+    </div>
+  </div>
+  <div id="help">
+    <p>
+    Welcome to your profile.
+    Create your <em>favorite topics</em>
+    and start writing notes,
+    <em>save your thoughts</em>
+    for future insights, writes and projects,
+    and <em>share your ideas</em>
+    over social networks!
+    </p>
+  </div>
+  <h2>Your Topics</h2>
+  <ul id="topics">
+    <li id="loading"></li>
+    <li class="newTopic">
+      <input class="name" placeholder="Enter a new topic!" />
+      <div class="count"><span>140</span> <small>left</small></div>
+      <button class="new">create</button>
+      <div class="load hide"></div>
+    </li>
+  </ul>
+</div>

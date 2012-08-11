@@ -1,0 +1,25 @@
+{ "name": "topics"
+, "description": "Just take notes"
+, "version": "0.0.1"
+, "homepage": "http://topics.heroku.com/"
+, "repository": "git://github.com/sadasant/topics.git"
+, "author": "Daniel Rodríguez <http://sadasant.com/>"
+, "private": true
+, "scripts":
+  { "start": "node app"
+  }
+, "dependencies":
+  { "express": "3.0.x"
+  , "jade": "0.26.x"
+  , "stylus": "0.28.x"
+  , "nib": "0.7.x"
+  , "mongoose": "2.7.x"
+  , "nodemailer": "0.3.x"
+  , "oauth": "0.9.x"
+  , "markdown" : "0.4.x"
+  }
+, "engines":
+{ "node": "0.8.5"
+, "npm": "1.1.x"
+}
+}
