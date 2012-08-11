@@ -1,9 +1,12 @@
-# topics.herokuapp.com
+# topics
 
-**topics** is a web application for creating notes by a given topic,
-it's intended to work for creating summaries of life events, books,
-classes or any learning subject, accessible from any device using
-your twitter account, and sharables over social networks.
+**topics** is a web application for creating notes by a given topic. It's purpose is to give you a simple, beautiful and fully interactive environment where you can inquire about your favourite things, begin summaries of life events, take annotations from books, classes or any other subject. Access it anywhere with your twitter account, and share your ideas over social networks!
+
+**Read more and test it live [here](http://topics.herokuapp.com/sadasant/topic/89bfef93da3549baface0b8aa34fe63578b8ddd70eee79dcd3910ecd57ce9b0c).**
+
+## Story and some tech details
+
+**topics** is an spare-time-2-weeks project made by Daniel Rodríguez [@sadasant](https://mobile.twitter.co/sadasant) for fun and knowledge. It is built entirely in *JavaScript*, with Open Source frameworks and libraries such as [NodeJS](http://nodejs.org/), [jQuery](http://jquery.com/), [Backbone](http://documentcloud.github.com/backbone/), [Underscore](documentcloud.github.com/underscore/), [RequireJS](http://requirejs.org/), [Express](http://expressjs.com/), [Jade](https://github.com/visionmedia/jade), [Stylus](http://learnboost.github.com/stylus/) and more!
 
 ## How to run it
 
@@ -33,4 +36,24 @@ It will have a full wiki. (Wait for it)
 
 # License
 
-MIT Licensed
+Copyright 2012 jQuery Foundation and other contributors
+http://jquery.com/
+
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+"Software"), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
