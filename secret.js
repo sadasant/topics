@@ -1,21 +1,21 @@
-exports.mongo_url = 'mongodb_url'
+exports.mongo_url = 'mongodb://user:pass@stuffhere.mongolab.com:PORT/database'
 
-exports.mail_to = 'mail_to'
+exports.mail_to = 'you@you.me'
 
 exports.smtp = {
-  service : "Gmail"
+  service : "Email Provider"
 , auth : {
-    user : "sender_mail"
-  , pass : "sender_pass"
+    user : "user@provider.com"
+  , pass : "password"
   }
 }
 
 exports.twitter = {
   consumer_key    : 'your key'
 , consumer_secret : 'your secret'
-, callback        : process.env.NODE_ENV === 'local' ? 'http://127.0.0.1:PORT' : ''
+, callback        : process.env.NODE_ENV === 'production' ? 'http://my.custom.url' : 'http://127.0.0.1:' + (process.env.app_port || process.env.PORT || 5000)
 }
 
 exports.session   = 'session_secret'
 
-exports.cypher_pass = 'cypher_pass'
+exports.cypher_pass = 'passphrase to encrypt the topics _ids'
