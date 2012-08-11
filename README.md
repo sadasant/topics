@@ -30,11 +30,11 @@ the `public/` route for static files, to the `production/` folder, which has all
 If you're interested on learning about RequireJS optimization,
 I recommend you to go to the official documentation: <http://requirejs.org/docs/optimization.html>
 
-# Wikis
+## Wikis
 
 It will have a full wiki. (Wait for it)
 
-# License
+## License
 
 Copyright 2012 jQuery Foundation and other contributors
 http://jquery.com/
