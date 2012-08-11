@@ -4,7 +4,7 @@
 
 **Read more and test it live [here](http://topics.herokuapp.com/sadasant/topic/89bfef93da3549baface0b8aa34fe63578b8ddd70eee79dcd3910ecd57ce9b0c).**
 
-## Story and some tech details
+## Some details
 
 **topics** is an spare-time-2-weeks project made by Daniel Rodríguez [@sadasant](https://mobile.twitter.co/sadasant) for fun and knowledge. It is built entirely in *JavaScript*, with Open Source frameworks and libraries such as [NodeJS](http://nodejs.org/), [jQuery](http://jquery.com/), [Backbone](http://documentcloud.github.com/backbone/), [Underscore](documentcloud.github.com/underscore/), [RequireJS](http://requirejs.org/), [Express](http://expressjs.com/), [Jade](https://github.com/visionmedia/jade), [Stylus](http://learnboost.github.com/stylus/) and more!
 
@@ -19,7 +19,7 @@
 What changes between the both states is that foreman stablish a environment variable with the port, which I use to switch from using
 the `public/` route for static files, to the `production/` folder, which has all the optimized AMD resources.
 
-## How to recompile the Client Side JavaScript source
+## Rebuild the public/ source
 
 - Install RequireJS with node: `npm install -g requirejs`
 
