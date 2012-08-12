@@ -35,5 +35,10 @@ utils.encrypt = function(text) {
 utils.decrypt  = function(hex) {
   var decipher = crypto.createDecipher('AES-128-CBC', secret.cypher_pass)
     , utf8     = decipher.update(hex, 'hex', 'utf8')
-  return utf8 += decipher.final('utf8')
+  try {
+    utf8 += decipher.final('utf8')
+  } catch(e) {
+    console.log(e)
+  }
+  return utf8
 }

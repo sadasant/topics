@@ -53,6 +53,7 @@ function nibCompile(str, path) {
 server.configure(function() {
   server.use(express.limit('5kb'))
   server.use(express.logger('dev'))
+  server.use(express.favicon(__dirname + '/topics.ico'))
   server.use(express.cookieParser(secret.session))
   server.use(express.session())
   server.use(express.bodyParser())

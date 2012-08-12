@@ -26,20 +26,27 @@ controller.index = function(req, res, next) {
     , user   = req.session.user
     , topics = []
 
-  if (user) {
+  if (user && user._id) {
     db.users.findOne({ _id : user._id }, foundUser)
   } else {
     return done()
   }
 
   function foundUser(err, _user) {
-    if (err || !_user) return next()
+    if (err || !_user) {
+      console.log('Error finding user: ', user)
+      req.session.regenerate()
+      return done()
+    }
     view = 'profile'
     db.topics.find({ user_id : user.user_id }, foundTopics)
   }
 
   function foundTopics(err, _topics) {
-    if (err) return next()
+    if (err) {
+      console.log('Error finding topics for user: ', user)
+      return done()
+    }
     var topic
       , i = 0
       , l = _topics.length
@@ -58,7 +65,7 @@ controller.index = function(req, res, next) {
 
   function done() {
     var JSONuser = {}
-    if (user) {
+    if (user && user._id) {
       JSONuser.user_id     = user.user_id
       JSONuser.screen_name = user.screen_name
       JSONuser.stats       = user.stats
@@ -186,19 +193,19 @@ controller.public_topic = function(req, res) {
   db.users.findOne({ screen_name : screen_name }, foundUser)
 
   function foundUser(err, _user) {
-    if (err || !_user) return next()
+    if (err || !_user) return res.redirect('/')
     user = _user
     db.topics.findOne({ _id : topic_id }, foundTopic)
   }
 
   function foundTopic(err, _topic) {
-    if (err || !_topic) return next()
+    if (err || !_topic) return res.redirect('/')
     topic = _topic
     db.notes.find({ topic_id : topic_id, user_id : user.user_id }, foundNotes)
   }
 
   function foundNotes(err, _notes) {
-    if (err || !_notes) return next()
+    if (err || !_notes) return res.redirect('/')
     var notes = []
       , note
       , i = 0
