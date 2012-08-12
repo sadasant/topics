@@ -178,7 +178,9 @@ controller.twitter_callback = function(req, res) {
     , twitter     : s.user.twitter
     , stats       : s.user.stats
     }
-    res.render('connect')
+    res.render('connect', {
+      popup : req.session.popup
+    })
   }
 }
 

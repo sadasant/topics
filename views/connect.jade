@@ -1,6 +1,13 @@
 | Connected!
+- if (popup)
+  #popup
 script
   var time = 500
+    , popup = document.getElementById('popup')
   setTimeout(function(){
-    window.close()
+    if (popup) {
+      window.close()
+    } else {
+      window.location.href = '/'
+    }
   }, time)

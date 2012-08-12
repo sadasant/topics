@@ -124,21 +124,25 @@ define([
       var that = this
         , left = $(window).width() / 2 - 250
 
-      // Connecting with Twitter
-      window.open('/connect?popup=1', 'sharer', 'width=500,height=300,top=150,left= ' + left + ',personalbar=0,toolbar=0,scrollbars=1,resizable=1')
-
-      User.fetch({
-        loop : true
-      , url  : User.url() + '?loop=1'
-      , success : function() {
-          that.homeView.remove(function() {
-            that.navigate('', trigger)
-          })
-        }
-      , error : function(model, res, req) {
-          console.log('ERROR', res)
-        }
-      })
+      // Mobile browsers doesn't like popups.
+      if (window.is_mobile) {
+        window.location.href = '/connect'
+      } else {
+        // Connecting with Twitter
+        window.open('/connect?popup=1', 'sharer', 'width=500,height=300,top=150,left= ' + left + ',personalbar=0,toolbar=0,scrollbars=1,resizable=1')
+        User.fetch({
+          loop : true
+        , url  : User.url() + '?loop=1'
+        , success : function() {
+            that.homeView.remove(function() {
+              that.navigate('', trigger)
+            })
+          }
+        , error : function(model, res, req) {
+            console.log('ERROR', res)
+          }
+        })
+      }
     }
   , logout : function() {
       if (!User.get('user_id')) {
