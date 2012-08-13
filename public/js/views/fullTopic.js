@@ -17,6 +17,10 @@ define('fullTopicView', [
     , $newCountSpan
     , $loading
     , notes_url
+    , tips = [
+      "Read the Markdown documentation to make beautiful notes! <a href='http://daringfireball.net/projects/markdown/'>http://daringfireball.net/pro...</a>"
+    , "Remember to read the description of this project: <a href='http://topics.herokuapp.com/sadasant/topic/89bfef93da3549baface0b8aa34fe63578b8ddd70eee79dcd3910ecd57ce9b0c'>http://topics.herokuapp.com/sadasant/top...</a>"
+    ]
 
   function createNoteView(that) {
     that.$notes      = that.$el.find('#notes')
@@ -66,9 +70,11 @@ define('fullTopicView', [
   , render : function(callback) {
       var $el = this.$el
         , that = this
+        , tip_position = (Math.random() * tips.length) >> 0
         , locals = {
             user  : this.user.attributes
           , topic : this.model.attributes
+          , tip   : tips[tip_position]
           }
       $el.hide().html(this.template(locals)).fadeIn(500, function() {
         $loading        = $('#loading')
