@@ -140,12 +140,21 @@ button::-moz-focus-inner
         border 1px solid #BBB
         color #2A3732
         text-shadow 1px 1px 0 #99eeff
+      .back:hover:before
+        content 'go back'
+        position absolute
+        margin-left -78px
+        text-align right
       .bye:hover
         box-shadow inset 0 0 5px #BE7E84
         color #36292B
         background #ddbbbb
         border 1px solid #BE7E84
         text-shadow 0 1px 1px #BE7E84
+      .bye:hover:after
+        content 'logout'
+        position absolute
+        margin-left 35px
     #help
       color #444
       font-size 14px
@@ -439,6 +448,8 @@ button::-moz-focus-inner
         line-height 18px
         p
           margin 0 0 8px
+        p:last-child
+          margin 0
         em
           font-style italic
         h1, h2, h3
