@@ -2,7 +2,7 @@
 // by Daniel Rodríguez
 // MIT Licensed
 
-define('fullTopicView', [
+define('FullTopicView', [
   'jquery'
 , 'underscore'
 , 'backbone'
@@ -11,23 +11,25 @@ define('fullTopicView', [
 , 'text!../templates/fullTopic.html'
 , 'jqueryColor'
 ], function($, _, B, NotesView, NoteModel, tpl) {
-  var fullTopicView
+
+  var FullTopicView
     , confirmView
+    , $newNoteText
     , $newNote
     , $newCountSpan
     , $loading
     , notes_url
     , tips = [
-      "Read the Markdown documentation to make beautiful notes!<br/><a href='http://daringfireball.net/projects/markdown/'>http://daringfireball.net/pro...</a>"
-    , "Remember to read the description of this project:<br/><a href='http://topics.herokuapp.com/sadasant/topic/89bfef93da3549baface0b8aa34fe63578b8ddd70eee79dcd3910ecd57ce9b0c'>http://topics.herokuapp.com/sadasant/top...</a>"
-    , "Are you having an issue? Write us in our github repo:<br/><a href='https://github.com/sadasant/topics/issues'>https://github.com/sadasant/top...</a>"
+      'Read the Markdown documentation to make beautiful notes!<br/><a href="http://daringfireball.net/projects/markdown/">http://daringfireball.net/pro...</a>'
+    , 'Remember to read the description of this project:<br/><a href="http://topics.herokuapp.com/sadasant/topic/89bfef93da3549baface0b8aa34fe63578b8ddd70eee79dcd3910ecd57ce9b0c">http://topics.herokuapp.com/sadasant/top...</a>'
+    , 'Are you having an issue? Write us in our github repo:<br/><a href="https://github.com/sadasant/topics/issues">https://github.com/sadasant/top...</a>'
     , , , // Sometimes don't display tips
     ]
 
   function createNoteView(that) {
     that.$notes      = that.$el.find('#notes')
     if (that.$notes[0]) {
-      that.notes     = new B.Collection
+      that.notes     = new B.Collection()
       that.notes.url = notes_url
       that.noteView  = new NotesView({
         collection : that.notes
@@ -40,14 +42,11 @@ define('fullTopicView', [
     return that
   }
 
-  fullTopicView = B.View.extend({
+  FullTopicView = B.View.extend({
     el         : '#box'
   , initialize : function(params) {
-      var $JSONnotes = $('#JSONnotes')
-        , JSONnotes
-        , that       = this
       this.$full     = this.$el.find('#fulltopic')
-      this.notes     = new B.Collection
+      this.notes     = new B.Collection()
       this.user      = params.user
       this.topic_id  = params.topic_id
       notes_url      = '/api/1/' + params.user.attributes.screen_name + '/topic/' + params.topic_id + '/notes'
@@ -67,9 +66,8 @@ define('fullTopicView', [
     , 'click .newNote .new'        : 'addNote'
     , 'click #header .title .back' : 'back'
     , 'click #header .user .bye'   : 'logout'
-    , 'click .note .text'          : 'showNote'
     }
-  , render : function(callback) {
+  , render : function() {
       var $el = this.$el
         , that = this
         , tip_position = (Math.random() * tips.length) >> 0
@@ -202,9 +200,8 @@ define('fullTopicView', [
       }
       $newCountSpan.html(length)
     }
-  , addNote : function(e) {
-      var $el    = this.$el
-        , $field = $newNoteText
+  , addNote : function() {
+      var $field = $newNoteText
         , $load  = $newNote.find('.load')
         , $new   = $newNote.find('.new')
         , note   = $.trim($field.val())
@@ -265,24 +262,23 @@ define('fullTopicView', [
   , remove : function(callback) {
       var $el   = this.$el
         , $full = this.$full
-        , that  = this
       this.undelegateEvents()
       $el.fadeOut(500, function() {
         $full.remove()
         $el.show()
-        callback && callback()
+        if (callback) {
+          callback()
+        }
       })
-    }
-  , showNote : function(e) {
     }
   })
 
   // HACK
   // Sharing a view between views
-  fullTopicView.setConfirmView = function(view) {
+  FullTopicView.setConfirmView = function(view) {
     confirmView = view
     NotesView.setConfirmView(confirmView)
   }
 
-  return fullTopicView
+  return FullTopicView
 })

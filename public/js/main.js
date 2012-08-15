@@ -13,7 +13,7 @@ require.config({
   , router        : 'router'
   , HomeView      : 'views/home'
   , ProfileView   : 'views/profile'
-  , fullTopicView : 'views/fullTopic'
+  , FullTopicView : 'views/fullTopic'
   , TopicsView    : 'views/topics'
   , NotesView     : 'views/notes'
   , ConfirmView   : 'views/confirm'
@@ -27,7 +27,7 @@ require.config({
     , exports : 'backbone'
     }
   , underscore : {
-      exports  : "_"
+      exports  : '_'
     }
   }
 })

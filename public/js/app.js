@@ -11,8 +11,8 @@ define('app', [
 
   // Initializing the Router
   // and the History API
-  function init() {
-    var router = new Router
+  function init(router) {
+    router = new Router()
     B.history.start()
   }
 
