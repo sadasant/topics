@@ -2,11 +2,7 @@
 // by Daniel Rodríguez
 // MIT Licensed
 
-define('UserModel', [
-  'jquery'
-, 'underscore'
-, 'backbone'
-], function($, _, B) {
+define('UserModel', ['backbone'], function(B) {
   var User
 
   User = B.Model.extend({

@@ -29,11 +29,10 @@ controller.get_topic = function(req, res) {
     return res.send('{}')
   }
 
-  db.topics.findOne({ _id : topic_id,  user_id : user.user_id }, foundTopic)
-
   function foundTopic(err, _topic) {
-    if (err) return sendError(500, err, res)
-
+    if (err) {
+      return sendError(500, err, res)
+    }
     res.send({
       _id     : app.utils.encrypt(_topic._id.toString())
     , name    : _topic.name
@@ -41,6 +40,9 @@ controller.get_topic = function(req, res) {
     , stats   : _topic.stats
     })
   }
+
+  db.topics.findOne({ _id : topic_id,  user_id : user.user_id }, foundTopic)
+
 }
 
 
@@ -54,14 +56,13 @@ controller.get_topics = function(req, res) {
     return res.send('[]')
   }
 
-  db.topics.find({ user_id : user.user_id }, foundTopics)
-
   function foundTopics(err, _topics) {
-    if (err) return sendError(500, err, res)
+    if (err) {
+      return sendError(500, err, res)
+    }
     var topics = []
       , topic
       , i = 0
-      , l = _topics.length
 
     for (; topic = _topics[i]; i++) {
       topics.push({
@@ -74,6 +75,9 @@ controller.get_topics = function(req, res) {
 
     res.send(topics)
   }
+
+  db.topics.find({ user_id : user.user_id }, foundTopics)
+
 }
 
 
@@ -88,7 +92,9 @@ controller.create_topic = function(req, res) {
   }
 
   db.topics.create(req.body, function(err, topic) {
-    if (err) return sendError(500, err, res)
+    if (err) {
+      return sendError(500, err, res)
+    }
     res.send({
       _id     : app.utils.encrypt(topic._id.toString())
     , name    : topic.name
@@ -110,20 +116,17 @@ controller.delete_topic = function(req, res) {
     return sendError(401, 'Seems like you\'re not logged in!', res)
   }
 
-  db.topics.remove({
-    _id     : _id
-  , user_id : user_id
-  }, topicRemoved)
-
   function topicRemoved(err) {
-    if (err) return sendError(500, err, res)
-
+    if (err) {
+      return sendError(500, err, res)
+    }
     db.notes.remove({ topic_id : _id, user_id : user_id }, notesRemoved)
   }
 
   function notesRemoved(err) {
-    if (err) return sendError(500, err, res)
-
+    if (err) {
+      return sendError(500, err, res)
+    }
     // Updating user's stats
     db.users.update({
       user_id : user_id
@@ -133,9 +136,17 @@ controller.delete_topic = function(req, res) {
   }
 
   function done(err) {
-    if (err) return sendError(500, err, res)
+    if (err) {
+      return sendError(500, err, res)
+    }
     res.send({})
   }
+
+  db.topics.remove({
+    _id     : _id
+  , user_id : user_id
+  }, topicRemoved)
+
 }
 
 
@@ -154,20 +165,19 @@ controller.update_topic = function(req, res) {
     return sendError(401, 'Seems like you\'re not logged in!', res)
   }
 
-  db.topics.findOne({
-    _id      : _id
-  , user_id  : user_id
-  }, foundTopic)
-
   function foundTopic(err, _topic) {
-    if (err || !_topic) return sendError(500, err, res)
+    if (err || !_topic) {
+      return sendError(500, err, res)
+    }
     topic = _topic
     topic.name = name
     topic.save(done)
   }
 
   function done(err) {
-    if (err) return sendError(500, err, res)
+    if (err) {
+      return sendError(500, err, res)
+    }
     res.send({
       _id      : app.utils.encrypt(topic._id.toString())
     , name     : topic.name
@@ -175,4 +185,10 @@ controller.update_topic = function(req, res) {
     , stats    : topic.stats
     })
   }
+
+  db.topics.findOne({
+    _id      : _id
+  , user_id  : user_id
+  }, foundTopic)
+
 }

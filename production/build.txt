@@ -14,21 +14,21 @@ css/highlight.css
 
 js/main.js
 ----------------
-js/lib/jquery.js
 js/lib/underscore-amd.js
+js/lib/jquery.js
 js/lib/backbone-amd.js
 js/lib/text.js
 text!../templates/home.html
 js/views/home.js
 text!../templates/topic.html
-text!../templates/confirm.html
-js/views/confirm.js
 js/lib/jquery.color.js
 js/views/topics.js
 js/models/topic.js
 text!../templates/profile.html
 js/views/profile.js
 text!../templates/note.html
+text!../templates/confirm.html
+js/views/confirm.js
 js/views/notes.js
 js/models/note.js
 text!../templates/fullTopic.html

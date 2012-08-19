@@ -3,11 +3,9 @@
 // MIT Licensed
 
 define('app', [
-  'jquery'
-, 'underscore'
-, 'backbone'
+  'backbone'
 , 'router'
-], function($, _, B, Router) {
+], function(B, Router) {
 
   // Initializing the Router
   // and the History API

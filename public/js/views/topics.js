@@ -9,9 +9,8 @@ define('TopicsView', [
 , 'underscore'
 , 'backbone'
 , 'text!../templates/topic.html'
-, 'ConfirmView'
 , 'jqueryColor'
-], function($, _, B, tpl, ConfirmView) {
+], function($, _, B, tpl) {
   var TopicsViewClass
     , topicEvents = {
         'click .del' : 'remove'

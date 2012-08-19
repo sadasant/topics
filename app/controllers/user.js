@@ -31,13 +31,6 @@ controller.get_current = function(req, res) {
     , sess  = req.session
     , sess_id = sess.id
     , ses_user
-    , count = 0
-
-  if (sess.user) {
-    checkUser(null, sess)
-  } else {
-    req.sessionStore.get(sess_id, checkUser)
-  }
 
   function checkUser(err, sess) {
     if (sess && sess.user) {
@@ -54,6 +47,12 @@ controller.get_current = function(req, res) {
     } else {
       res.send(res_user)
     }
+  }
+
+  if (sess.user) {
+    checkUser(null, sess)
+  } else {
+    req.sessionStore.get(sess_id, checkUser)
   }
 
 }

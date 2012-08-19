@@ -12,7 +12,7 @@ const express  = require('express')
     , secret   = require('./secret')
 
 var app           = {}
-  , name          = 'topics'
+  , app_name      = 'topics'
   , port          = process.env.app_port || process.env.PORT || 5000
   , publ          = process.env.app_port || process.env.PORT ? 'production' : 'public' // Only to test minified files locally
   , server        = express()
@@ -21,13 +21,13 @@ var app           = {}
 
 // Twitter's OAuth
 oa = new OAuth(
-     "https://api.twitter.com/oauth/request_token"
-   , "https://api.twitter.com/oauth/access_token"
+     'https://api.twitter.com/oauth/request_token'
+   , 'https://api.twitter.com/oauth/access_token'
    , secret.twitter.consumer_key
    , secret.twitter.consumer_secret
-   , "1.0"
-   , secret.twitter.callback + "/connect/twitter/callback"
-   , "HMAC-SHA1"
+   , '1.0'
+   , secret.twitter.callback + '/connect/twitter/callback'
+   , 'HMAC-SHA1'
    )
 
 app.oa       = oa
@@ -82,5 +82,5 @@ require('./app/routes')(app)
 
 // Starting the server
 http.createServer(server).listen(server.get('port'), function(){
-  console.log(name + " listening on 127.0.0.1:" + server.get('port'))
+  console.log(app_name + ' listening on 127.0.0.1:' + server.get('port'))
 })

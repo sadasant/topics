@@ -9,7 +9,7 @@ define('NotesView', [
 , 'text!../templates/note.html'
 , 'ConfirmView'
 , 'jqueryColor'
-], function($, _, B, tpl, ConfirmView) {
+], function($, _, B, tpl) {
   var NotesViewClass
     , noteEvents = {
         'click .del'     : 'remove'

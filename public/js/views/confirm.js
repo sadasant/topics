@@ -4,10 +4,9 @@
 
 define('ConfirmView', [
   'jquery'
-, 'underscore'
 , 'backbone'
 , 'text!../templates/confirm.html'
-], function($, _, B, tpl) {
+], function($, B, tpl) {
   var ConfirmView
 
   ConfirmView = B.View.extend({
@@ -31,7 +30,9 @@ define('ConfirmView', [
       this.$el.fadeIn(500)
     }
   , yes : function() {
-      this.callback && this.callback()
+      if (typeof this.callback === 'function') {
+        this.callback()
+      }
       this.$el.fadeOut(500)
     }
   , no : function() {

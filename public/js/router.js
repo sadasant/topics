@@ -37,7 +37,6 @@
 
 define([
   'jquery'
-, 'underscore'
 , 'backbone'
 , 'HomeView'
 , 'ProfileView'
@@ -47,7 +46,7 @@ define([
 , 'TopicModel'
 ], function(
   // Libs
-  $, _, B
+  $, B
 
   // Views
 , HomeView

@@ -1,1 +1,1 @@
-define("app",["jquery","underscore","backbone","router"],function(e,t,n,r){function i(e){e=new r,n.history.start()}return{init:i}})
+define("app",["backbone","router"],function(e,t){function n(n){n=new t,e.history.start()}return{init:n}})

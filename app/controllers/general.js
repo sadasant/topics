@@ -21,16 +21,10 @@ module.exports = function(_app) {
 
 
 // Index
-controller.index = function(req, res, next) {
+controller.index = function(req, res) {
   var view   = 'index'
     , user   = req.session.user
     , topics = []
-
-  if (user && user._id) {
-    db.users.findOne({ _id : user._id }, foundUser)
-  } else {
-    return done()
-  }
 
   function foundUser(err, _user) {
     if (err || !_user) {
@@ -49,7 +43,6 @@ controller.index = function(req, res, next) {
     }
     var topic
       , i = 0
-      , l = _topics.length
 
     for (; topic = _topics[i]; i++) {
       topics.push({
@@ -76,6 +69,13 @@ controller.index = function(req, res, next) {
     , JSONtopics : JSON.stringify(topics)
     })
   }
+
+  if (user && user._id) {
+    db.users.findOne({ _id : user._id }, foundUser)
+  } else {
+    return done()
+  }
+
 }
 
 
@@ -96,16 +96,19 @@ controller.connect = function(req, res) {
     })
   }
 
-  app.oa.getOAuthRequestToken(gotOAuthRequestToken)
-
-  function gotOAuthRequestToken(err, token, secret, results) {
-    if (err) return sendError(500, err, res)
+  function gotOAuthRequestToken(err, token, secret) {
+    if (err) {
+      return sendError(500, err, res)
+    }
     req.session.oauth = {
       token  : token
     , secret : secret
     }
     res.redirect('https://twitter.com/oauth/authenticate?oauth_token=' + token)
   }
+
+  app.oa.getOAuthRequestToken(gotOAuthRequestToken)
+
 }
 
 
@@ -123,8 +126,6 @@ controller.twitter_callback = function(req, res) {
   req.session.oauth.verifier = req.query.oauth_verifier
   oauth = req.session.oauth
 
-  app.oa.getOAuthAccessToken(oauth.token, oauth.secret, oauth.verifier, gotAccessToken)
-
   function gotAccessToken(err, token, secret, _result) {
     result = _result
     if (err || !result || !result.user_id) {
@@ -141,7 +142,9 @@ controller.twitter_callback = function(req, res) {
   }
 
   function foundUser(err, user) {
-    if (err) return sendError(500, err, res)
+    if (err) {
+      return sendError(500, err, res)
+    }
     if (user) {
       // We have this user
       if (user.screen_name !== result.screen_name) {
@@ -149,7 +152,9 @@ controller.twitter_callback = function(req, res) {
         // save it
         user.screen_name = result.screen_name
         user.save(function(err) {
-          if (err) return sendError(500, err, res)
+          if (err) {
+            return sendError(500, err, res)
+          }
           s.user = user
           done()
         })
@@ -161,7 +166,9 @@ controller.twitter_callback = function(req, res) {
     } else {
       // We don't have this user yet
       db.users.create(req.session.oauth, result, function(err, user) {
-        if (err || !user) sendError(500, err, res)
+        if (err || !user) {
+          sendError(500, err, res)
+        }
         s.user = user
         done()
       })
@@ -169,7 +176,9 @@ controller.twitter_callback = function(req, res) {
   }
 
   function done(err) {
-    if (err) return sendError(500, err, res)
+    if (err) {
+      return sendError(500, err, res)
+    }
     // Assigning directly gets removed somehow
     req.session.user = {
       _id         : s.user._id
@@ -182,6 +191,9 @@ controller.twitter_callback = function(req, res) {
       popup : req.session.popup
     })
   }
+
+  app.oa.getOAuthAccessToken(oauth.token, oauth.secret, oauth.verifier, gotAccessToken)
+
 }
 
 // Public topic
@@ -192,26 +204,29 @@ controller.public_topic = function(req, res) {
     , user
     , topic
 
-  db.users.findOne({ screen_name : screen_name }, foundUser)
-
   function foundUser(err, _user) {
-    if (err || !_user) return res.redirect('/')
+    if (err || !_user) {
+      return res.redirect('/')
+    }
     user = _user
     db.topics.findOne({ _id : topic_id }, foundTopic)
   }
 
   function foundTopic(err, _topic) {
-    if (err || !_topic) return res.redirect('/')
+    if (err || !_topic) {
+      return res.redirect('/')
+    }
     topic = _topic
     db.notes.find({ topic_id : topic_id, user_id : user.user_id }, foundNotes)
   }
 
   function foundNotes(err, _notes) {
-    if (err || !_notes) return res.redirect('/')
+    if (err || !_notes) {
+      return res.redirect('/')
+    }
     var notes = []
       , note
       , i = 0
-      , l = _notes.length
 
     // Sorting notes
     _notes = _notes.sort(function(a, b) {
@@ -234,4 +249,7 @@ controller.public_topic = function(req, res) {
     , notes : notes
     })
   }
+
+  db.users.findOne({ screen_name : screen_name }, foundUser)
+
 }

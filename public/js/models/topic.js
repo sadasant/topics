@@ -2,11 +2,7 @@
 // by Daniel Rodríguez
 // MIT Licensed
 
-define('TopicModel', [
-  'jquery'
-, 'underscore'
-, 'backbone'
-], function($, _, B) {
+define('TopicModel', ['backbone'], function(B) {
   var Topic
 
   Topic = B.Model.extend({

@@ -2,11 +2,7 @@
 // by Daniel Rodríguez
 // MIT Licensed
 
-define('NoteModel', [
-  'jquery'
-, 'underscore'
-, 'backbone'
-], function($, _, B) {
+define('NoteModel', ['backbone'], function(B) {
   var Note
 
   Note = B.Model.extend({

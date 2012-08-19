@@ -19,6 +19,10 @@
 What changes between the both states is that foreman stablish a environment variable with the port, which I use to switch from using
 the `public/` route for static files, to the `production/` folder, which has all the optimized AMD resources.
 
+## JavaScript flavor
+
+I'm using [this](https://github.com/sadasant/dotfiles/blob/master/.jshintrc) .jshintrc :)
+
 ## Rebuild the public/ source
 
 - Install RequireJS with node: `npm install -g requirejs`

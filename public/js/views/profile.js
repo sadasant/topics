@@ -24,7 +24,7 @@ define('ProfileView', [
       that.topics.url = topics_url
     }
     if (that.$topics[0]) {
-      that.topics     = new B.Collection
+      that.topics     = new B.Collection()
       that.topics.url = topics_url
       that.topicView  = new TopicsView({
         collection  : that.topics
@@ -39,11 +39,11 @@ define('ProfileView', [
 
   ProfileView = B.View.extend({
     el         : '#box'
-  , initialize : function(params) {
+  , initialize : function() {
       var $JSONtopics = $('#JSONtopics')
         , that        = this
       this.$profile   = this.$el.find('#profile')
-      this.topics     = new B.Collection
+      this.topics     = new B.Collection()
       // Downloading the templates only if they're needed
       this.template  = _.template(tpl)
       $loading  = $('#loading')
@@ -61,7 +61,7 @@ define('ProfileView', [
     , 'keyup .newTopic .name'    : 'updateCount'
     , 'click #header .user .bye' : 'logout'
     }
-  , render : function(callback) {
+  , render : function() {
       var $el = this.$el
         , that = this
         , locals = {
@@ -88,13 +88,11 @@ define('ProfileView', [
         })
       }
     }
-  , addTopic : function(e) {
-      var $el    = this.$el
-        , $field = $newTopic.find('.name')
+  , addTopic : function() {
+      var $field = $newTopic.find('.name')
         , $load  = $newTopic.find('.load')
         , $new   = $newTopic.find('.new')
         , topic  = $.trim($field.val())
-        , topics = this.topics
         , that   = this
         , newTopic
       if (!topic || topic.length > 140) {
@@ -120,7 +118,7 @@ define('ProfileView', [
         })
       }
     }
-  , updateCount : function(e) {
+  , updateCount : function() {
       var length
       if (!this.$countSpan) {
         this.$countSpan = $newTopic.find('.count span')
@@ -148,11 +146,12 @@ define('ProfileView', [
   , remove : function(callback) {
       var $el      = this.$el
         , $profile = this.$profile
-        , that     = this
       $el.fadeOut(500, function() {
         $profile.remove()
         $el.show()
-        callback && callback()
+        if (typeof callback === 'function') {
+          callback()
+        }
       })
     }
   })
