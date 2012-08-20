@@ -17,16 +17,6 @@ define('UserModel', ['backbone'], function(B) {
       , visits  : 0
       }
     }
-  , validate : function(user) {
-
-      if (!user.user_id) {
-        return 'Invalid User Id'
-      }
-      if (!user.screen_name) {
-        return 'Invalid Screen Name'
-      }
-
-    }
   })
 
   return User

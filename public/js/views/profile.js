@@ -40,21 +40,11 @@ define('ProfileView', [
   ProfileView = B.View.extend({
     el         : '#box'
   , initialize : function() {
-      var $JSONtopics = $('#JSONtopics')
-        , that        = this
-      this.$profile   = this.$el.find('#profile')
-      this.topics     = new B.Collection()
-      // Downloading the templates only if they're needed
-      this.template  = _.template(tpl)
-      $loading  = $('#loading')
-      $newTopic = $('.newTopic')
-      if ($JSONtopics[0] && !~window.location.hash.indexOf('topic')) {
-        this.JSONtopics = JSON.parse($JSONtopics.val())
-        $JSONtopics.remove()
-        $('#loading').fadeOut(500, function() {
-          createTopicView(that).topics.add(that.JSONtopics)
-        }).addClass('stop')
-      }
+      this.$profile = this.$el.find('#profile')
+      this.topics   = new B.Collection()
+      this.template = _.template(tpl)
+      $loading      = $('#loading')
+      $newTopic     = $('.newTopic')
     }
   , events : {
       'click .newTopic .new'     : 'addTopic'
@@ -62,29 +52,38 @@ define('ProfileView', [
     , 'click #header .user .bye' : 'logout'
     }
   , render : function() {
-      var $el = this.$el
-        , that = this
+      var $el    = this.$el
+        , that   = this
         , locals = {
             user : this.model.attributes
           }
+      function renderProfile() {
+        $loading        = $('#loading')
+        $newTopic       = $('.newTopic')
+        that.$profile   = that.$el.find('#profile')
+        var $JSONtopics = $('#JSONtopics')
+        if ($JSONtopics[0]) {
+          that.JSONtopics = JSON.parse($JSONtopics.val())
+          $JSONtopics.remove()
+          $('#loading').fadeOut(500, function() {
+            createTopicView(that).topics.add(that.JSONtopics)
+          }).addClass('stop')
+        } else {
+          createTopicView(that).topics.fetch({
+            success : function() {
+              $loading.fadeOut(500, function() {
+                that.topicView.renderAll()
+              }).addClass('stop')
+            }
+          , error : function() {
+              $loading.addClass('error')
+            }
+          })
+        }
+      }
       if (!this.$profile[0]) {
-        $el.hide().html(this.template(locals)).fadeIn(500, function() {
-          $loading  = $('#loading')
-          $newTopic = $('.newTopic')
-          that.$profile = that.$el.find('#profile')
-          if (!that.JSONtopics) {
-            createTopicView(that).topics.fetch({
-              success : function() {
-                // Adding topics once tey're fetched
-                $loading.fadeOut(500, function() {
-                  that.topicView.renderAll()
-                }).addClass('stop')
-              }
-            , error : function() {
-                $loading.addClass('error')
-              }
-            })
-          }
+        $el.fadeOut(0, function() {
+          $el.html(that.template(locals)).fadeIn(500, renderProfile)
         })
       }
     }

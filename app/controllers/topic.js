@@ -24,7 +24,7 @@ controller.get_topic = function(req, res) {
     , screen_name = req.params.screen_name
     , user        = req.session.user
 
-  if (!topic_id || screen_name !== user.screen_name) {
+  if (!topic_id || !user || screen_name !== user.screen_name) {
     // This is not the logged in user
     return res.send('{}')
   }

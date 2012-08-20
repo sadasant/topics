@@ -1,34 +1,5 @@
 extends layout
 
 block content
-  #profile
-    #header
-      .title
-        a(href="/") topics
-      .user
-        a(href="/")
-          | @#{user.screen_name}
-        .bye X
-    #help
-      p
-        | Welcome to your profile.
-        |  Create your 
-        em favorite topics
-        |  and start writing notes, 
-        em save your thoughts
-        |  for future insights, writes and projects, and 
-        em share your ideas
-        |  over social networks!
-    h2 Your Topics
-    ul#topics
-      li#loading
-      li.newTopic
-        input.name(placeholder="Enter a new topic!")
-        .count
-          span 140
-          |  
-          small left
-        button.new create
-        .load.hide
   input#JSONuser(type="hidden", value="#{JSONuser}")
   input#JSONtopics(type="hidden", value="#{JSONtopics}")

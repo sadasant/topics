@@ -1,5 +1,5 @@
 // topics
-// by Daniel Rodríguez
+// by Daniel Rodríguez <http://sadasant.com/>
 // MIT Licensed
 
 // router.js
@@ -8,31 +8,15 @@
 // It is the main script for handling
 // changes to the site's URL.
 //
-// Ther are basically 4 binded URLs:
+// There are basically 4 binded URLs:
 //
-// -   #/
-//     In the root URL (here we call it home),
-//     the software decides which view to render, the
-//     home view or the profile view. The choice depends
-//     on variables within the Router or the scope,
-//     like the user's id or the existence of previously
-//     rendered profile/home views.
+// -   `/`, the home URI.
 //
-// -   #/connect
-//     In mobile browsers it will redirect the
-//     user to the /connect URL, in the rest of the
-//     browsers it will open a popup winodw which will
-//     work exactly like redirecting to the /connect URL,
-//     That page will begin the OAuth dance with Twitter.
-//     Why popups? I wanted to unddderstand how Hootsuite was
-//     making the OAuth connection with popups without reloading
-//     the site.
+// -   `/connect`, where we connect with Twitter.
 //
-// -   #/logout
-//     This binding destroys the current user.
-//     Backbone's Model's destroy method sends
-//     a DELETE request to the server, in which
-//     we destroy the current user's session.
+// -   `/logout`, where we check-out.
+//
+// -   `:screen_name/topic/:_id`, to show a user's topic.
 //
 
 define([
@@ -44,20 +28,7 @@ define([
 , 'ConfirmView'
 , 'UserModel'
 , 'TopicModel'
-], function(
-  // Libs
-  $, B
-
-  // Views
-, HomeView
-, ProfileView
-, FullTopicView
-, ConfirmView
-
-  // Models
-, UserModel
-, TopicModel
-) {
+], function($, B, HomeView, ProfileView, FullTopicView, ConfirmView, UserModel, TopicModel) {
 
   var Router
     , router
@@ -120,7 +91,7 @@ define([
   }
 
 
-  // Extending Backbone Router
+  // ## Extending Backbone Router
   Router = B.Router.extend({
     routes : {
       ''        : 'home'
@@ -129,14 +100,18 @@ define([
     , ':screen_name/topic/:_id' : 'showTopic'
     }
 
-    // On new
+    // ## Initializing the router
+    // Once the page is loaded, the router starts.
+    // First, it created the current user,
+    // then it creates the views according to the
+    // existing DOM structure.
   , initialize : function() {
       router = this
       User   = new UserModel({ _id : 'current' })
       if ($('#welcome')[0]) {
         this.homeView = new HomeView()
       }
-      if ($('#profile')[0]) {
+      if ($('#profile')[0] && !~window.location.hash.indexOf('topic')) {
         this.profileView = new ProfileView({ model : User })
       }
       var $user = $('#JSONuser')
@@ -145,15 +120,19 @@ define([
         JSONuser = JSON.parse($user.val())
         User.set(JSONuser)
         loadedUser()
-      } else {
-        connectLoop(this)
       }
     }
 
-    // #/
+    // ## /
+    // In the root URL (here we call it home),
+    // the software first check if the call is been made
+    // once the user is checked to be logged or not.
+    // If it's not logged, it renders the home view.
+    // If it's logged, it renders the profile view.
+    // It also tries to clean other views that are
+    // not currently needed.
   , home : function() {
-      var locals
-        , user_id = User.get('user_id')
+      var user_id = User.get('user_id')
       if (!started) {
         return
       }
@@ -161,27 +140,29 @@ define([
         if (!this.homeView) {
           this.homeView = new HomeView()
         }
-        this.homeView.render()
-      } else if ($('#fulltopic')[0] || !~window.location.hash.indexOf('/topic/')) {
-        if (this.fullTopicView) {
-          this.fullTopicView.remove()
-        }
+        return this.homeView.render()
+      }
+      if (this.fullTopicView) {
+        this.fullTopicView.remove()
+      }
+      if (!this.profileView) {
+        delete this.homeView
         this.profileView = new ProfileView({ model : User })
         this.profileView.render()
-      } else {
-        locals = {
-          user   : User.attributes
-        , topics : []
-        }
-        if (!this.profileView) {
-          delete this.homeView
-          this.profileView = new ProfileView({ model : User })
-          this.profileView.render()
-        }
       }
     }
 
-    // #/connect
+    // ## /connect
+    // This is triggered when the customer clicks the
+    // `Connect with Twitter` button at the home view.
+    // It tries to make sure we're not logged yet.
+    // In mobile browsers it will redirect the
+    // user to the /connect URL, in the rest of the
+    // browsers it will open a popup winodw which will
+    // work exactly like redirecting to the /connect URL,
+    // That page will begin the OAuth dance with Twitter.
+    // Why popups? I wanted to unddderstand how to make auths
+    // with long polling.
   , connect : function() {
       if (this.profileView) {
         return this.navigate('', trigger)
@@ -198,7 +179,10 @@ define([
       }
     }
 
-    // #/logout
+    // ## /logout
+    // This binding triggers the Backbone's Model's destroy
+    // method, that sends a DELETE request to the server,
+    // in which we destroy the current user's session.
   , logout : function() {
       if (!User.get('user_id')) {
         return this.navigate('', trigger)
@@ -218,37 +202,48 @@ define([
       })
     }
 
-    // :screen_name/topic/:_id
+    // ## :screen_name/topic/:_id
+    // This URI renders one of the topics by the
+    // logged user, by the given parammeters (screen_name, _id),
+    // no matter if there's no topics collection yet.
   , showTopic : function(screen_name, topic_id) {
       var that  = this
         , Topic
       if (!User.attributes.user_id) {
         that.navigate('', trigger)
       }
+      function renderTopic() {
+        that.fullTopicView = new FullTopicView({ model : Topic, topic_id : topic_id, user : User })
+        that.fullTopicView.render()
+      }
+      function newTopic() {
+        Topic = new TopicModel({ _id : topic_id })
+        Topic.fetch({
+          url     : '/api/1/' + screen_name + '/topic/' + topic_id
+        , success : renderTopic
+        , error   : function(model, res, req) {
+            console.log('ERROR', res)
+            that.navigate('', trigger)
+          }
+        })
+      }
       if (this.profileView) {
         Topic = this.profileView.topics.where({ _id : topic_id })[0]
-        if (Topic) {
-          this.profileView.remove(function() {
-            that.fullTopicView = new FullTopicView({ model : Topic, topic_id : topic_id, user : User })
-            that.fullTopicView.render()
-          })
-        } else {
-          Topic = new TopicModel({ _id : topic_id })
-          Topic.fetch({
-            url     : '/api/1/' + screen_name + '/topic/' + topic_id
-          , success : function() {
-              that.fullTopicView = new FullTopicView({ model : Topic, topic_id : topic_id, user : User })
-              that.fullTopicView.render()
-            }
-          , error : function(model, res, req) {
-              console.log('ERROR', res)
-            }
-          })
-        }
+        this.profileView.remove(function() {
+          delete that.profileView
+          if (Topic) {
+            renderTopic()
+          } else {
+            newTopic()
+          }
+        })
+      } else {
+        newTopic()
       }
     }
 
   })
 
   return Router
+
 })
