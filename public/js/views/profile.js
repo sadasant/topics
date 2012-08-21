@@ -9,7 +9,6 @@ define('ProfileView', [
 , 'TopicsView'
 , 'TopicModel'
 , 'text!../templates/profile.html'
-, 'jqueryColor'
 ], function($, _, B, TopicsView, TopicModel, tpl) {
   var ProfileView
     , confirmView
@@ -35,6 +34,45 @@ define('ProfileView', [
       delete that.$topics
     }
     return that
+  }
+
+  function setSortableTopics(that) {
+    var topics  = that.topics
+      , $topics = $('ul#topics')
+      , busy_sort = false
+    function checkIfBusy() {
+      if (busy_sort) {
+        $topics.sortable('destroy')
+      }
+    }
+    function updateSortedTopics(e, ui) {
+      var $lis    = $topics.find('li.topic')
+        , _ids    = [].map.call($lis, function(e){ return e.id.slice(7) })
+        , $target = ui.item
+        , $del    = $target.find('.del')
+        , $load   = $target.find('.load')
+      $del.hide()
+      $load.removeClass('hide')
+      busy_sort = true
+      $.post(topics.url + '/sort', { positions : _ids }, function(data) {
+        if (data.status === 'ok') {
+          busy_sort = false
+          $load.addClass('hide')
+          $del.show()
+        } else {
+          $load.addClass('error')
+        }
+      })
+      // TODO:
+      // topics.sort()
+    }
+    $topics.sortable({
+      opacity : 0.8
+    , items   : '.topic'
+    , cursor  : 'move'
+    , start   : checkIfBusy
+    , update  : updateSortedTopics
+    })
   }
 
   ProfileView = B.View.extend({
@@ -67,12 +105,14 @@ define('ProfileView', [
           $JSONtopics.remove()
           $('#loading').fadeOut(500, function() {
             createTopicView(that).topics.add(that.JSONtopics)
+            setSortableTopics(that)
           }).addClass('stop')
         } else {
           createTopicView(that).topics.fetch({
             success : function() {
               $loading.fadeOut(500, function() {
                 that.topicView.renderAll()
+                setSortableTopics(that)
               }).addClass('stop')
             }
           , error : function() {

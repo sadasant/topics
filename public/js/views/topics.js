@@ -9,7 +9,6 @@ define('TopicsView', [
 , 'underscore'
 , 'backbone'
 , 'text!../templates/topic.html'
-, 'jqueryColor'
 ], function($, _, B, tpl) {
   var TopicsViewClass
     , topicEvents = {

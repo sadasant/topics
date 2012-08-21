@@ -37,7 +37,9 @@ Note.statics.create = function(_note, callback) {
     , user
     , topic
 
-  if (!db) db = app.server.set('db')
+  if (!db) {
+    db = app.server.set('db')
+  }
 
   if (!_note.text || _note.text.length > 2048) {
     return callback('Invalid Note Text')
@@ -52,21 +54,31 @@ Note.statics.create = function(_note, callback) {
   db.users.findOne({ user_id : _note.user_id }, foundUser)
 
   function foundUser(err, _user) {
-    if (err) return callback(err)
-    if (!_user) return callback('User Not Found')
+    if (err) {
+      return callback(err)
+    }
+    if (!_user) {
+      return callback('User Not Found')
+    }
     user = _user
     db.topics.findOne({ _id : app.utils.decrypt(_note.topic_id), user_id : _note.user_id }, foundTopic)
   }
 
   function foundTopic(err, _topic) {
-    if (err) return callback(err)
-    if (!_topic) return callback('Topic Not Found')
+    if (err) {
+      return callback(err)
+    }
+    if (!_topic) {
+      return callback('Topic Not Found')
+    }
     topic = _topic
     db.notes.count({ topic_id : topic._id,  user_id : user.user_id }, countedNotes)
   }
 
   function countedNotes(err, n_of_notes) {
-    if (n_of_notes > 30) return callback('You have more than 30 Notes in this topic!!!')
+    if (n_of_notes > 30) {
+      return callback('You have more than 30 Notes in this topic!!!')
+    }
 
     note = new db.notes({
       text       : _note.text
@@ -80,7 +92,9 @@ Note.statics.create = function(_note, callback) {
   }
 
   function savedNote(err) {
-    if (err) return callback(err)
+    if (err) {
+      return callback(err)
+    }
     // The server is not sending back the object...
     // TODO: Is there a way to wait until the server
     // responds with the full object without searching again?
@@ -88,8 +102,12 @@ Note.statics.create = function(_note, callback) {
   }
 
   function foundNote(err, _note) {
-    if (err) return callback(err)
-    if (!_note) return callback()
+    if (err) {
+      return callback(err)
+    }
+    if (!_note) {
+      return callback()
+    }
     note = _note
     topic.stats.notes += 1
     topic.markModified('stats')
@@ -97,14 +115,18 @@ Note.statics.create = function(_note, callback) {
   }
 
   function savedTopic(err) {
-    if (err) return callback(err)
-    user.stats.notes  += 1
+    if (err) {
+      return callback(err)
+    }
+    user.stats.notes += 1
     user.markModified('stats')
     user.save(savedUser)
   }
 
   function savedUser(err) {
-    if (err) return callback(err)
+    if (err) {
+      return callback(err)
+    }
     callback(null, note)
   }
 }

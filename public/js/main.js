@@ -22,11 +22,14 @@
 //     To require text files from our server.
 //     In this case, all of them are template files.
 //
-// -   **jQuery**:
-//     To handle the DOM in an easy way.
-//
-// -   **jQuery Color**:
-//     To extend jquery's animations to handle colors.
+// -   **jQuery (Custom)**:
+//     jQuery 1.8.0, to handle the DOM in an easy way.
+//     Plus a custom jQuery-UI 1.8.23 only with:
+//     -   UI > Core
+//     -   UI > Widget
+//     -   UI > Mouse
+//     -   Interactions > Sortable
+//     -   Effects > Core
 //
 // -   **Underscore**:
 //     Because it's cool, it handles simple templates,
@@ -85,8 +88,7 @@
 require.config({
   paths: {
     text          : 'lib/text'
-  , jquery        : 'lib/jquery'
-  , jqueryColor   : 'lib/jquery.color'
+  , jquery        : 'lib/jquery.custom'
   , underscore    : 'lib/underscore-amd'
   , backbone      : 'lib/backbone-amd'
   , app           : 'app'

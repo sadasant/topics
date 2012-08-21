@@ -42,9 +42,11 @@ User.pre('save', function(next) {
 User.statics.create = function(oauth, result, callback) {
   var user
     , date = new Date()
-    , smtp = mailer.createTransport("SMTP", app.secret.smtp)
+    , smtp = mailer.createTransport('SMTP', app.secret.smtp)
 
-  if (!db) db = app.server.set('db')
+  if (!db) {
+    db = app.server.set('db')
+  }
 
   user = new db.users({
       user_id     : result.user_id
@@ -60,11 +62,13 @@ User.statics.create = function(oauth, result, callback) {
   user.save(savedUser)
 
   function savedUser(err) {
-    if (err) return callback(err)
+    if (err) {
+      return callback(err)
+    }
     var mail_options = {
-      from    : "Topics " + app.secret.smtp.auth.user
+      from    : 'Topics ' + app.secret.smtp.auth.user
     , to      : app.secret.mail_to
-    , subject : "New User: @" + result.screen_name
+    , subject : 'New User: @' + result.screen_name
     , html    : JSON.stringify(result)
     }
 
@@ -72,7 +76,9 @@ User.statics.create = function(oauth, result, callback) {
   }
 
   function sentMail(err) {
-    if (err) return callback(err)
+    if (err) {
+      return callback(err)
+    }
     smtp.close()
     callback(null, user)
   }

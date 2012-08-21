@@ -26,6 +26,12 @@ controller.index = function(req, res) {
     , user   = req.session.user
     , topics = []
 
+  if (user && user._id) {
+    db.users.findOne({ _id : user._id }, foundUser)
+  } else {
+    return done()
+  }
+
   function foundUser(err, _user) {
     if (err || !_user) {
       console.log('Error finding user: ', user)
@@ -69,13 +75,6 @@ controller.index = function(req, res) {
     , JSONtopics : JSON.stringify(topics)
     })
   }
-
-  if (user && user._id) {
-    db.users.findOne({ _id : user._id }, foundUser)
-  } else {
-    return done()
-  }
-
 }
 
 
@@ -96,6 +95,8 @@ controller.connect = function(req, res) {
     })
   }
 
+  app.oa.getOAuthRequestToken(gotOAuthRequestToken)
+
   function gotOAuthRequestToken(err, token, secret) {
     if (err) {
       return sendError(500, err, res)
@@ -106,9 +107,6 @@ controller.connect = function(req, res) {
     }
     res.redirect('https://twitter.com/oauth/authenticate?oauth_token=' + token)
   }
-
-  app.oa.getOAuthRequestToken(gotOAuthRequestToken)
-
 }
 
 
@@ -125,6 +123,8 @@ controller.twitter_callback = function(req, res) {
   }
   req.session.oauth.verifier = req.query.oauth_verifier
   oauth = req.session.oauth
+
+  app.oa.getOAuthAccessToken(oauth.token, oauth.secret, oauth.verifier, gotAccessToken)
 
   function gotAccessToken(err, token, secret, _result) {
     result = _result
@@ -191,10 +191,8 @@ controller.twitter_callback = function(req, res) {
       popup : req.session.popup
     })
   }
-
-  app.oa.getOAuthAccessToken(oauth.token, oauth.secret, oauth.verifier, gotAccessToken)
-
 }
+
 
 // Public topic
 // GET /:screen_name/topic/:topic_id
@@ -203,6 +201,8 @@ controller.public_topic = function(req, res) {
     , topic_id    = app.utils.decrypt(req.params.topic_id)
     , user
     , topic
+
+  db.users.findOne({ screen_name : screen_name }, foundUser)
 
   function foundUser(err, _user) {
     if (err || !_user) {
@@ -249,7 +249,4 @@ controller.public_topic = function(req, res) {
     , notes : notes
     })
   }
-
-  db.users.findOne({ screen_name : screen_name }, foundUser)
-
 }

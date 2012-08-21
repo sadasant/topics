@@ -29,6 +29,8 @@ controller.get_notes = function(req, res) {
     return sendError(401, 'Seems like you\'re not logged in!', res)
   }
 
+  db.notes.find({ topic_id : topic_id,  user_id : user.user_id }, foundNotes)
+
   function foundNotes(err, _notes) {
     if (err) {
       return sendError(500, err, res)
@@ -51,13 +53,64 @@ controller.get_notes = function(req, res) {
       , topic_id : note.topic_id
       })
     }
-
     res.send(notes)
+  }
+}
 
+
+// POST /api/1/:screen_name/topic/:topic_id/notes/sort
+controller.sort_notes = function(req, res) {
+  var screen_name = req.params.screen_name
+    , topic_id    = app.utils.decrypt(req.params.topic_id)
+    , positions   = req.body.positions
+    , user        = req.session.user
+
+  try {
+    positions = positions.map(function(e) {
+      return app.utils.decrypt(e)
+    })
+  } catch(e) {
+    return res.send('[]')
+  }
+
+  if (screen_name !== user.screen_name) {
+    // This is not the logged in user
+    return res.send('[]')
   }
 
   db.notes.find({ topic_id : topic_id,  user_id : user.user_id }, foundNotes)
 
+  function foundNotes(err, _notes) {
+    if (err) {
+      return sendError(500, err, res)
+    }
+    var notes = {}
+      , l      = _notes.length - 1
+
+    // Sorting notes
+    _notes.forEach(function(e, p) {
+      notes[e._id] = e
+      if (!(l - p)) {
+        loopPositions(0)
+      }
+    })
+
+    function loopPositions(p) {
+      var note = notes[positions[p]]
+      note.position = p
+      note.save(function() {
+        if (l - p) {
+          loopPositions(p + 1)
+        } else {
+          done()
+        }
+      })
+    }
+  }
+
+  function done() {
+    res.send({ status : 'ok' })
+  }
 }
 
 
@@ -99,6 +152,12 @@ controller.delete_note = function(req, res) {
     return sendError(401, 'Seems like you\'re not logged in!', res)
   }
 
+  db.notes.remove({
+    _id      : _id
+  , user_id  : user_id
+  , topic_id : topic_id
+  }, noteRemoved)
+
   function noteRemoved(err) {
     if (err) {
       return sendError(500, err, res)
@@ -133,13 +192,6 @@ controller.delete_note = function(req, res) {
     }
     res.send({})
   }
-
-  db.notes.remove({
-    _id      : _id
-  , user_id  : user_id
-  , topic_id : topic_id
-  }, noteRemoved)
-
 }
 
 
@@ -158,6 +210,12 @@ controller.update_note = function(req, res) {
   if (!(user_id && screen_name === req.params.screen_name)) {
     return sendError(401, 'Seems like you\'re not logged in!', res)
   }
+
+  db.notes.findOne({
+    _id      : _id
+  , user_id  : user_id
+  , topic_id : topic_id
+  }, foundNote)
 
   function foundNote(err, _note) {
     if (err || !_note) {
@@ -180,11 +238,4 @@ controller.update_note = function(req, res) {
     , topic_id : note.topic_id
     })
   }
-
-  db.notes.findOne({
-    _id      : _id
-  , user_id  : user_id
-  , topic_id : topic_id
-  }, foundNote)
-
 }

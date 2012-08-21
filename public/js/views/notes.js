@@ -8,7 +8,6 @@ define('NotesView', [
 , 'backbone'
 , 'text!../templates/note.html'
 , 'ConfirmView'
-, 'jqueryColor'
 ], function($, _, B, tpl) {
   var NotesViewClass
     , noteEvents = {

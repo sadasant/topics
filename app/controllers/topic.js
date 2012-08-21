@@ -29,6 +29,8 @@ controller.get_topic = function(req, res) {
     return res.send('{}')
   }
 
+  db.topics.findOne({ _id : topic_id,  user_id : user.user_id }, foundTopic)
+
   function foundTopic(err, _topic) {
     if (err) {
       return sendError(500, err, res)
@@ -40,9 +42,6 @@ controller.get_topic = function(req, res) {
     , stats   : _topic.stats
     })
   }
-
-  db.topics.findOne({ _id : topic_id,  user_id : user.user_id }, foundTopic)
-
 }
 
 
@@ -56,6 +55,8 @@ controller.get_topics = function(req, res) {
     return res.send('[]')
   }
 
+  db.topics.find({ user_id : user.user_id }, foundTopics)
+
   function foundTopics(err, _topics) {
     if (err) {
       return sendError(500, err, res)
@@ -63,6 +64,11 @@ controller.get_topics = function(req, res) {
     var topics = []
       , topic
       , i = 0
+
+    // Sorting topics
+    _topics = _topics.sort(function(a, b) {
+      return a.position - b.position
+    })
 
     for (; topic = _topics[i]; i++) {
       topics.push({
@@ -75,8 +81,61 @@ controller.get_topics = function(req, res) {
 
     res.send(topics)
   }
+}
+
+
+// POST /api/1/:screen_name/topics/sort
+controller.sort_topics = function(req, res) {
+  var screen_name = req.params.screen_name
+    , positions   = req.body.positions
+    , user        = req.session.user
+
+  try {
+    positions = positions.map(function(e) {
+      return app.utils.decrypt(e)
+    })
+  } catch(e) {
+    return res.send('[]')
+  }
+
+  if (screen_name !== user.screen_name) {
+    // This is not the logged in user
+    return res.send('[]')
+  }
 
   db.topics.find({ user_id : user.user_id }, foundTopics)
+
+  function foundTopics(err, _topics) {
+    if (err) {
+      return sendError(500, err, res)
+    }
+    var topics = {}
+      , l      = _topics.length - 1
+
+    // Sorting topics
+    _topics.forEach(function(e, p) {
+      topics[e._id] = e
+      if (!(l - p)) {
+        loopPositions(0)
+      }
+    })
+
+    function loopPositions(p) {
+      var topic = topics[positions[p]]
+      topic.position = p
+      topic.save(function() {
+        if (l - p) {
+          loopPositions(p + 1)
+        } else {
+          done()
+        }
+      })
+    }
+  }
+
+  function done() {
+    res.send({ status : 'ok' })
+  }
 
 }
 
@@ -116,6 +175,11 @@ controller.delete_topic = function(req, res) {
     return sendError(401, 'Seems like you\'re not logged in!', res)
   }
 
+  db.topics.remove({
+    _id     : _id
+  , user_id : user_id
+  }, topicRemoved)
+
   function topicRemoved(err) {
     if (err) {
       return sendError(500, err, res)
@@ -141,12 +205,6 @@ controller.delete_topic = function(req, res) {
     }
     res.send({})
   }
-
-  db.topics.remove({
-    _id     : _id
-  , user_id : user_id
-  }, topicRemoved)
-
 }
 
 
@@ -164,6 +222,11 @@ controller.update_topic = function(req, res) {
   if (!(user_id && screen_name === req.params.screen_name)) {
     return sendError(401, 'Seems like you\'re not logged in!', res)
   }
+
+  db.topics.findOne({
+    _id      : _id
+  , user_id  : user_id
+  }, foundTopic)
 
   function foundTopic(err, _topic) {
     if (err || !_topic) {
@@ -185,10 +248,4 @@ controller.update_topic = function(req, res) {
     , stats    : topic.stats
     })
   }
-
-  db.topics.findOne({
-    _id      : _id
-  , user_id  : user_id
-  }, foundTopic)
-
 }

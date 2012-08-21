@@ -9,7 +9,6 @@ define('FullTopicView', [
 , 'NotesView'
 , 'NoteModel'
 , 'text!../templates/fullTopic.html'
-, 'jqueryColor'
 ], function($, _, B, NotesView, NoteModel, tpl) {
 
   var FullTopicView
@@ -40,6 +39,45 @@ define('FullTopicView', [
       delete that.$notes
     }
     return that
+  }
+
+  function setSortableNotes(that) {
+    var notes   = that.notes
+      , $notes = $('ul#notes')
+      , busy_sort = false
+    function checkIfBusy() {
+      if (busy_sort) {
+        $notes.sortable('destroy')
+      }
+    }
+    function updateSortedNotes(e, ui) {
+      var $lis    = $notes.find('li.note')
+        , _ids    = [].map.call($lis, function(e){ return e.id.slice(6) })
+        , $target = ui.item
+        , $del    = $target.find('.del')
+        , $load   = $target.find('.load')
+      $del.hide()
+      $load.removeClass('hide')
+      busy_sort = true
+      $.post(notes.url + '/sort', { positions : _ids }, function(data) {
+        if (data.status === 'ok') {
+          busy_sort = false
+          $load.addClass('hide')
+          $del.show()
+        } else {
+          $load.addClass('error')
+        }
+      })
+      // TODO:
+      // notes.sort()
+    }
+    $notes.sortable({
+      opacity : 0.8
+    , items   : '.note'
+    , cursor  : 'move'
+    , start   : checkIfBusy
+    , update  : updateSortedNotes
+    })
   }
 
   FullTopicView = B.View.extend({
@@ -101,12 +139,15 @@ define('FullTopicView', [
               // Adding notes once tey're fetched
               $loading.fadeOut(500, function() {
                 that.noteView.renderAll()
+                setSortableNotes(that)
               }).addClass('stop')
             }
           , error : function() {
               $loading.addClass('error')
             }
           })
+        } else {
+          setSortableNotes(that)
         }
       })
     }

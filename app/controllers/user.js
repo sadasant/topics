@@ -9,14 +9,12 @@ var app
   , controller = {}
   , sendError
 
-
 module.exports = function(_app) {
   app = _app
   db  = app.server.set('db')
   sendError = app.utils.sendError
   return controller
 }
-
 
 // Load Current User in JSON format
 // if ?loop= then do this with long polling
@@ -31,6 +29,12 @@ controller.get_current = function(req, res) {
     , sess  = req.session
     , sess_id = sess.id
     , ses_user
+
+  if (sess.user) {
+    checkUser(null, sess)
+  } else {
+    req.sessionStore.get(sess_id, checkUser)
+  }
 
   function checkUser(err, sess) {
     if (sess && sess.user) {
@@ -48,13 +52,6 @@ controller.get_current = function(req, res) {
       res.send(res_user)
     }
   }
-
-  if (sess.user) {
-    checkUser(null, sess)
-  } else {
-    req.sessionStore.get(sess_id, checkUser)
-  }
-
 }
 
 

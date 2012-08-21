@@ -29,6 +29,7 @@ Topic = new Schema({
     notes  : { type : Number, default : 0 }
   , visits : { type : Number, default : 0 }
   }
+, position    : { type : Number, default : 0  }
 , created_at  : { type : Date }
 , updated_at  : { type : Date }
 })
@@ -43,7 +44,9 @@ Topic.statics.create = function(_topic, callback) {
     , topic
     , user
 
-  if (!db) db = app.server.set('db')
+  if (!db) {
+    db = app.server.set('db')
+  }
 
   if (!_topic.name || _topic.name.length > 140) {
     return callback('Invalid Topic Name')
@@ -55,18 +58,24 @@ Topic.statics.create = function(_topic, callback) {
   db.users.findOne({ user_id : _topic.user_id }, foundUser)
 
   function foundUser(err, _user) {
-    if (err) return callback(err)
-    if (!_user) return callback('User Not Found')
+    if (err) {
+      return callback(err)
+    }
+    if (!_user) {
+      return callback('User Not Found')
+    }
     user = _user
     db.topics.count({ user_id : user.user_id }, countedTopics)
   }
 
   function countedTopics(err, n_of_topics) {
-    if (n_of_topics > 50) return callback('You have more than 50 Topics!!!')
-
+    if (n_of_topics > 50) {
+      return callback('You have more than 50 Topics!!!')
+    }
     topic = new db.topics({
       name       : noXSS(_topic.name)
     , user_id    : user.user_id
+    , position   : n_of_topics
     , created_at : date
     , updated_at : date
     })
@@ -74,13 +83,19 @@ Topic.statics.create = function(_topic, callback) {
   }
 
   function savedTopic(err) {
-    if (err) return callback(err)
+    if (err) {
+      return callback(err)
+    }
     db.topics.findOne(topic, foundTopic)
   }
 
   function foundTopic(err, _topic) {
-    if (err) return callback(err)
-    if (!_topic) return callback()
+    if (err) {
+      return callback(err)
+    }
+    if (!_topic) {
+      return callback()
+    }
     topic = _topic
     user.stats.topics += 1
     user.markModified('stats')
@@ -88,7 +103,9 @@ Topic.statics.create = function(_topic, callback) {
   }
 
   function savedUser(err) {
-    if (err) return callback(err)
+    if (err) {
+      return callback(err)
+    }
     callback(null, topic)
   }
 }
