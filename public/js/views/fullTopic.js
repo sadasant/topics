@@ -20,7 +20,7 @@ define('FullTopicView', [
     , notes_url
     , tips = [
       'Read the Markdown documentation to make beautiful notes!<br/><a href="http://daringfireball.net/projects/markdown/">http://daringfireball.net/pro...</a>'
-    , 'Remember to read the description of this project:<br/><a href="http://topics.herokuapp.com/sadasant/topic/89bfef93da3549baface0b8aa34fe63578b8ddd70eee79dcd3910ecd57ce9b0c">http://topics.herokuapp.com/sadasant/top...</a>'
+    , 'Remember to read the description of this project:<br/><a href="http://topics.sadasant.com/sadasant/topic/89bfef93da3549baface0b8aa34fe63578b8ddd70eee79dcd3910ecd57ce9b0c">http://topics.sadasant.com/sadasant/topic...</a>'
     , 'Are you having an issue? Write us in our github repo:<br/><a href="https://github.com/sadasant/topics/issues">https://github.com/sadasant/top...</a>'
     , , , // Sometimes don't display tips
     ]
