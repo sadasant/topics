@@ -188,11 +188,12 @@ define([
         return this.navigate('', trigger)
       }
       var that = this
+        , view = that.profileView ? 'profileView' : 'fullTopicView'
       User.destroy({
         success : function() {
           User.attributes = {}
-          that.profileView.remove(function() {
-            delete that.profileView
+          that[view].remove(function() {
+            delete that[view]
             that.navigate('', trigger)
           })
         }

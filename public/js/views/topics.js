@@ -15,6 +15,7 @@ define('TopicsView', [
         'click .del' : 'remove'
       }
     , confirmView
+    , collection
     , $loading
     , user_screen_name
 
@@ -22,10 +23,11 @@ define('TopicsView', [
     initialize : function(params) {
       _(this).bindAll('add')
       if (this.collection) {
+        collection = this.collection
         this.collection.bind('add', this.add)
-        this.tags        = []
+        this.tags = {}
         user_screen_name = params.screen_name
-        $loading         = $('#loading')
+        $loading = $('#loading')
       }
       this.template = _.template(tpl)
     }
@@ -63,17 +65,20 @@ define('TopicsView', [
         that.add(model)
       })
     }
-  , remove : function() {
-      var $el  = this.$el
-        , that = this
+  , remove : function(e) {
+      var $el   = this.el.id ? this.$el : $(e.currentTarget.parentElement)
+        , _id   = $el[0].id.slice(7)
+        , model = this.el.id ? this.model : collection.find(function(e) { return e.attributes._id === _id })
+        , $del  = $el.find('.del')
+        , $load = $el.find('.load')
       confirmView.render({
-        text : 'Remove "<b>' + this.model.attributes.name + '</b>" and all it\'s notes?'
+        text : 'Remove "<b>' + model.attributes.name + '</b>" and all it\'s notes?'
       , yes  : 'Yes!'
       , no   : 'Nope'
       }, function() {
-        $el.find('.del').hide()
-        $el.find('.load').removeClass('hide')
-        that.model.trigger('delete', function() {
+        $del.hide()
+        $load.removeClass('hide')
+        model.trigger('delete', function() {
           $el.fadeOut(100, function() {
             $el.remove()
           })

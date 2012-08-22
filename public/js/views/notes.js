@@ -19,6 +19,7 @@ define('NotesView', [
       , 'click img'      : 'openImage'
       }
     , confirmView
+    , collection
     , $loading
     , note_url
 
@@ -29,6 +30,7 @@ define('NotesView', [
         note_url = params.notes_url.slice(0, params.notes_url.length - 1)
       }
       if (this.collection) {
+        collection = this.collection
         this.collection.bind('add', this.add)
         this.tags = []
         $loading  = $('#loading')
@@ -39,7 +41,7 @@ define('NotesView', [
       var that = this
       $(this.el).html(this.template({ note : this.model.attributes })).fadeIn(0, function() {
         that.$el.find('pre code').each(function(i, e) {
-          hljs.highlightBlock(e)
+          window.hljs.highlightBlock(e)
         })
       })
       return this
@@ -86,7 +88,7 @@ define('NotesView', [
       , yes  : 'Yes!'
       , no   : 'Nope'
       }, function() {
-        $el.find('.del').hide()
+        $el.find('.del').addClass('hide')
         $el.find('.load').removeClass('hide')
         that.model.trigger('delete', function() {
           $el.fadeOut(100, function() {
@@ -95,20 +97,21 @@ define('NotesView', [
         })
       })
     }
-  , edit : function() {
-      if (!this.$editbox) {
-        this.$editbox   = this.$el.find('.editbox')
-        this.$text      = this.$el.find('.text')
-        this.$del       = this.$el.find('.del')
-        this.$edit      = this.$el.find('.edit')
-        this.$save      = this.$el.find('.save')
-        this.$cancel    = this.$el.find('.cancel')
-        this.$count     = this.$el.find('.count')
-        this.$countSpan = this.$count.find('span')
-        this.updateCount()
+  , edit : function(e) {
+      if (!this.el.id) {
+        this.$el = $(e.currentTarget.parentElement)
       }
+      this.$editbox   = this.$el.find('.editbox')
+      this.$text      = this.$el.find('.text')
+      this.$del       = this.$el.find('.del')
+      this.$edit      = this.$el.find('.edit')
+      this.$save      = this.$el.find('.save')
+      this.$cancel    = this.$el.find('.cancel')
+      this.$count     = this.$el.find('.count')
+      this.$countSpan = this.$count.find('span')
+      this.updateCount()
       this.cachedText = this.$editbox.val()
-      this.$del.addClass('hide')
+      this.$del.addClass('hide').hide()
       this.$edit.addClass('hide')
       this.$text.addClass('hide')
       this.$editbox.removeClass('hide')
@@ -128,7 +131,7 @@ define('NotesView', [
       // was causing an issue with "<" character.
       this.$editbox.val(this.cachedText)
       this.updateCount()
-      this.$del.removeClass('hide')
+      this.$del.removeClass('hide').show()
       this.$edit.removeClass('hide')
       this.$text.removeClass('hide')
       this.$editbox.addClass('hide')
@@ -143,6 +146,8 @@ define('NotesView', [
         , $load    = this.$el.find('.load')
         , text     = $editbox.val()
         , that     = this
+        , _id      = this.$el[0].id.slice(6)
+        , model    = this.el.id ? this.model : collection.find(function(e) { return e.attributes._id === _id })
       if (!text || text === this.cachedText || text.length > 2048) {
         $editbox
         .css('background-color', '#FCF8D0')
@@ -152,14 +157,14 @@ define('NotesView', [
       } else {
         $save.addClass('hide')
         $load.removeClass('hide')
-        this.model.save('text', text, {
-          url     : note_url + '/' + this.model.attributes._id
+        model.save('text', text, {
+          url     : note_url + '/' + model.attributes._id
         , success : function() {
             $save.removeClass('hide')
             $load.addClass('hide')
             that.cachedText = text
-            $text.html(that.model.get('parsed')).find('pre code').each(function(i, e) {
-              hljs.highlightBlock(e)
+            $text.html(model.get('parsed')).find('pre code').each(function(i, e) {
+              window.hljs.highlightBlock(e)
             })
             that.cancelEdit()
           }
