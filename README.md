@@ -2,7 +2,7 @@
 
 **topics** is a web application for creating notes by a given topic. It's purpose is to give you a simple, beautiful and fully interactive environment where you can inquire about your favourite things, begin summaries of life events, take annotations from books, classes or any other subject. Access it anywhere with your twitter account, and share your ideas over social networks!
 
-**Read more and test it live [here](http://topics.herokuapp.com/sadasant/topic/89bfef93da3549baface0b8aa34fe63578b8ddd70eee79dcd3910ecd57ce9b0c).**
+**Read more and test it live here: [http://topics.sadasant.com/sadasant/topic...](http://topics.sadasant.com/sadasant/topic/89bfef93da3549baface0b8aa34fe63578b8ddd70eee79dcd3910ecd57ce9b0c).**
 
 ## Some details
 
