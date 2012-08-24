@@ -71,7 +71,6 @@ User.statics.create = function(oauth, result, callback) {
     , subject : 'New User: @' + result.screen_name
     , html    : JSON.stringify(result)
     }
-
     smtp.sendMail(mail_options, sentMail)
   }
 

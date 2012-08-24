@@ -26,12 +26,13 @@ module.exports = function(_app) {
   app.server.del ('/api/1/user/current'        , controllers.user.destroy_session)
 
   // Topics
-  app.server.get ('/api/1/:screen_name/topic/:_id'  , controllers.topic.get_topic)
-  app.server.get ('/api/1/:screen_name/topics'      , controllers.topic.get_topics)
-  app.server.post('/api/1/:screen_name/topics/sort' , controllers.topic.sort_topics)
-  app.server.post('/api/1/topic'                    , controllers.topic.create_topic)
-  app.server.del ('/api/1/:screen_name/topic/:_id'  , controllers.topic.delete_topic)
-  app.server.put ('/api/1/:screen_name/topic/:_id'  , controllers.topic.update_topic)
+  app.server.get ('/api/1/:screen_name/topic/:_id'       , controllers.topic.get_topic)
+  app.server.get ('/api/1/:screen_name/topics'           , controllers.topic.get_topics)
+  app.server.post('/api/1/:screen_name/topics/sort'      , controllers.topic.sort_topics)
+  app.server.post('/api/1/topic'                         , controllers.topic.create_topic)
+  app.server.del ('/api/1/:screen_name/topic/:_id'       , controllers.topic.delete_topic)
+  app.server.put ('/api/1/:screen_name/topic/:_id'       , controllers.topic.update_topic)
+  app.server.post('/api/1/:screen_name/topic/:_id/email' , controllers.topic.email_topic)
 
   // Notes
   app.server.get ('/api/1/:screen_name/topic/:topic_id/notes'      , controllers.note.get_notes)

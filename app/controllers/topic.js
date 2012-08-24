@@ -2,6 +2,10 @@
 // by Daniel Rodríguez
 // MIT Licensed
 
+const mailer = require('nodemailer')
+    , jade   = require('jade')
+    , fs     = require('fs')
+
 var app
   , db
   , controller = {}
@@ -246,6 +250,98 @@ controller.update_topic = function(req, res) {
     , name     : topic.name
     , user_id  : topic.user_id
     , stats    : topic.stats
+    })
+  }
+}
+
+
+// POST /api/1/:screen_name/topic/:_id
+controller.email_topic = function(req, res) {
+  var user        = req.session.user
+    , screen_name = user.screen_name
+    , user_id     = user.user_id
+    , _id         = app.utils.decrypt(req.params._id)
+    , topic
+    , notes
+    , smtp
+    , email = req.body.email
+    , time_diff
+    , over_time
+
+  if (!(user_id && screen_name === req.params.screen_name)) {
+    return sendError(401, 'Seems like you\'re not logged in!', res)
+  }
+
+  if (!req.session.emails) {
+    // Setting Emails Session
+    req.session.emails = {
+      updated_at : new Date()
+    , sent_mails : 0
+    }
+  } else {
+    time_diff = new Date() - req.session.emails.updated_at
+    over_time = time_diff > 60000
+    // If the user have sent more than 10 emails in one minute
+    if (over_time) {
+      if (req.session.emails.sent_mails > 10) {
+        return sendError(404, 'You\'ve sent too many emails!', res)
+      }
+      req.session.emails.sent_mails = 0
+    }
+  }
+
+  // Setting smtp
+  smtp = mailer.createTransport('SMTP', app.secret.smtp)
+
+  db.topics.findOne({
+    _id      : _id
+  , user_id  : user_id
+  }, foundTopic)
+
+  function foundTopic(err, _topic) {
+    if (err || !_topic) {
+      return sendError(500, err, res)
+    }
+    topic = _topic
+    db.notes.find({ topic_id : topic._id,  user_id : user.user_id }, foundNotes)
+  }
+
+  function foundNotes(err, _notes) {
+    if (err) {
+      return sendError(500, err, res)
+    }
+    notes = _notes
+    var locals = {
+      user  : user
+    , topic : topic
+    , notes : notes.map(function(e) { e.parsed = Markdown.parse(e.text); return e })
+    , encrypted_id : req.params._id
+    }
+    fs.readFile(__dirname + '/../../views/email.jade', 'utf-8', function(err, data) {
+      if (err) {
+        return sendError(500, err, res)
+      }
+      sendMail(jade.compile(data.toString('utf-8'))(locals))
+    })
+  }
+
+  function sendMail(html) {
+    var mail_options = {
+      from    : 'Topics ' + app.secret.smtp.auth.user
+    , to      : email
+    , subject : '"' + topic.name + '"'
+    , html    : html
+    }
+    smtp.sendMail(mail_options, done)
+  }
+
+  function done(err) {
+    if (err) {
+      return sendError(500, err, res)
+    }
+    req.session.emails.sent_mails += 1
+    res.send({
+      status : 'ok'
     })
   }
 }

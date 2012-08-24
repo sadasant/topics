@@ -18,6 +18,7 @@ define('FullTopicView', [
     , $newCountSpan
     , $loading
     , notes_url
+    , topic_url
     , tips = [
       'Read the Markdown documentation to make beautiful notes!<br/><a href="http://daringfireball.net/projects/markdown/">http://daringfireball.net/pro...</a>'
     , 'Remember to read the description of this project:<br/><a href="http://topics.sadasant.com/sadasant/topic/89bfef93da3549baface0b8aa34fe63578b8ddd70eee79dcd3910ecd57ce9b0c">http://topics.sadasant.com/sadasant/topic...</a>'
@@ -68,8 +69,7 @@ define('FullTopicView', [
           $load.addClass('error')
         }
       })
-      // TODO:
-      // notes.sort()
+      // notes.sort() ?
     }
     $notes.sortable({
       opacity : 0.8
@@ -87,7 +87,8 @@ define('FullTopicView', [
       this.notes     = new B.Collection()
       this.user      = params.user
       this.topic_id  = params.topic_id
-      notes_url      = '/api/1/' + params.user.attributes.screen_name + '/topic/' + params.topic_id + '/notes'
+      topic_url      = '/api/1/' + params.user.attributes.screen_name + '/topic/' + params.topic_id
+      notes_url      = topic_url + '/notes'
       this.notes.url = notes_url
       // Downloading the templates only if they're needed
       this.template  = _.template(tpl)
@@ -104,6 +105,7 @@ define('FullTopicView', [
     , 'click .newNote .new'        : 'addNote'
     , 'click #header .title .back' : 'back'
     , 'click #header .user .bye'   : 'logout'
+    , 'click .sendMail .send'      : 'sendMail'
     }
   , render : function() {
       var $el = this.$el
@@ -299,6 +301,37 @@ define('FullTopicView', [
       }, function() {
         window.location.hash = 'logout'
       })
+    }
+  , sendMail : function(e) {
+      var $sendMail     = $('.sendMail')
+        , $send         = $sendMail.find('.send')
+        , $load         = $sendMail.find('.load')
+        , $input        = $sendMail.find('input')
+        , email         = $input.val()
+        , validateEmail = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      if (validateEmail.test(email)) {
+        $send.hide()
+        $load.removeClass('hide')
+        $.post(topic_url + '/email', { email : email }, function(data) {
+          if (data.status === 'ok') {
+            $input.val('')
+            $send.show()
+            $load.addClass('hide')
+          } else {
+            $input.css('background-color', '#FCF8D0')
+            .animate({
+              backgroundColor : '#fff'
+            }, 1000)
+          }
+        })
+      } else {
+        $input
+        .val('')
+        .css('background-color', '#FCF8D0')
+        .animate({
+          backgroundColor : '#fff'
+        }, 1000)
+      }
     }
   , remove : function(callback) {
       var $el   = this.$el

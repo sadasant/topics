@@ -1,0 +1,57 @@
+p
+  | Hello!
+  br
+  br
+  | Someone emailed you a few notes authored by 
+  a(href='https://twitter.com/' + user.screen_name)= '@' + user.screen_name
+  |  using 
+  a(href='https://topics.sadasant.com/') topics.sadasant.com
+  | .
+  br
+  br
+  b Topics
+  |  aims to be a clean environment
+  |  where you can create notes organized by topics,
+  |  save them for future insights, writings and projects,
+  |  send them to your friends by email
+  |  or even share them over social networks!
+  br
+  br
+  | You can read more about 
+  em topics
+  |  
+  a(href='http://topics.sadasant.com/sadasant/topic/89bfef93da3549baface0b8aa34fe63578b8ddd70eee79dcd3910ecd57ce9b0c') here
+  | .
+
+
+i The Topic:
+hr
+center
+  h1
+    em
+      a(href='http://topics.sadasant.com/' + user.screen_name + '/topic/' + encrypted_id)= topic.name
+- each note in notes
+  p!= note.parsed
+
+br
+br
+br
+
+i The Source:
+hr
+- each note in notes
+  blockquote= note.text
+
+br
+p
+  | Thank you for reading and welcome anytime at 
+  b
+    a(href='https://topics.sadasant.com/') topics.sadasant.com
+  | .
+  br
+  br
+  | Sincerely,
+  br
+  em
+    a(href='http://sadasant.com/') Daniel Rodríguez
+    | .

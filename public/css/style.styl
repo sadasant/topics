@@ -57,7 +57,7 @@ button::-moz-focus-inner
       text-shadow 1px 1px 0 white
       font-size 11px
       position absolute
-      margin 10px 0 0 650px
+      margin 10px 0 0 614px
       cursor pointer
     .what:hover
       color #a1a1a1
@@ -171,7 +171,7 @@ button::-moz-focus-inner
       margin 0 0 0 30px
     #topics, #notes
       padding 0 20px
-      .topic, .newTopic, .newNote
+      .topic, .newTopic, .newNote, .sendMail
         background rgba(#fff, .7)
         margin 10px 0
         padding 15px 10px
@@ -222,7 +222,7 @@ button::-moz-focus-inner
         .load.error
           background #ED0010
           animation none
-        .new, .del
+        .new, .del, .send
           display inline-block
           float right
           font-size 11px
@@ -240,13 +240,13 @@ button::-moz-focus-inner
           border-left 1px solid #ccc
           border-top 1px solid #ccc
           background #ddd
-        .new
+        .new, .send
           text-shadow 0 1px 1px #0099dd
           border 1px solid #00aaee
           border-right 1px solid #0099dd
           border-bottom 1px solid #0099dd
           background #00aaee
-        .new:hover
+        .new:hover, .send:hover
           cursor pointer
           border 1px solid #00ccff
           border-right 1px solid #00ccff
@@ -621,6 +621,24 @@ button::-moz-focus-inner
       .text
         width 550px !important
         color #777
+    .sendMail
+      color #999
+      font-size 14px
+      text-align center
+      input
+        background white
+        border
+        font-weight normal
+        font-size 13px
+        width 412px
+        text-shadow none
+        border 1px solid #ddd
+        border 1px solid #e9e9e9
+        border-bottom 1px solid #e0e0e0
+        border-radius 5px
+        padding 3px 5px
+        margin-top -3px
+        margin-bottom -4px
     .buttom
       width 680px
       position absolute
