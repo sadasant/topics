@@ -20,7 +20,7 @@ module.exports = function(_app) {
 
 // GET /api/1/:screen_name/topic/:topic_id/notes
 controller.get_notes = function(req, res) {
-  var topic_id    = app.utils.decrypt(req.params.topic_id)
+  var topic_id    = req.params.topic_id
     , user        = req.session.user
     , screen_name = req.params.screen_name
 
@@ -46,7 +46,7 @@ controller.get_notes = function(req, res) {
 
     for (; note = _notes[i]; i++) {
       notes.push({
-        _id      : app.utils.encrypt(note._id.toString())
+        _id      : note._id.toString()
       , text     : note.text
       , parsed   : Markdown.parse(note.text)
       , user_id  : note.user_id
@@ -61,17 +61,9 @@ controller.get_notes = function(req, res) {
 // POST /api/1/:screen_name/topic/:topic_id/notes/sort
 controller.sort_notes = function(req, res) {
   var screen_name = req.params.screen_name
-    , topic_id    = app.utils.decrypt(req.params.topic_id)
+    , topic_id    = req.params.topic_id
     , positions   = req.body.positions
     , user        = req.session.user
-
-  try {
-    positions = positions.map(function(e) {
-      return app.utils.decrypt(e)
-    })
-  } catch(e) {
-    return res.send('[]')
-  }
 
   if (screen_name !== user.screen_name) {
     // This is not the logged in user
@@ -130,7 +122,7 @@ controller.create_note = function(req, res) {
     }
 
     res.send({
-      _id      : app.utils.encrypt(note._id.toString())
+      _id      : note._id.toString()
     , text     : note.text
     , parsed   : Markdown.parse(note.text)
     , user_id  : note.user_id
@@ -145,8 +137,8 @@ controller.delete_note = function(req, res) {
   var user        = req.session.user
     , screen_name = user.screen_name
     , user_id     = user.user_id
-    , topic_id    = app.utils.decrypt(req.params.topic_id)
-    , _id         = app.utils.decrypt(req.params._id)
+    , topic_id    = req.params.topic_id
+    , _id         = req.params._id
 
   if (!(user_id && screen_name === req.params.screen_name)) {
     return sendError(401, 'Seems like you\'re not logged in!', res)
@@ -200,8 +192,8 @@ controller.update_note = function(req, res) {
   var user        = req.session.user
     , screen_name = user.screen_name
     , user_id     = user.user_id
-    , topic_id    = app.utils.decrypt(req.params.topic_id)
-    , _id         = app.utils.decrypt(req.params._id)
+    , topic_id    = req.params.topic_id
+    , _id         = req.params._id
     , note
 
   // New values
@@ -231,7 +223,7 @@ controller.update_note = function(req, res) {
       return sendError(500, err, res)
     }
     res.send({
-      _id      : app.utils.encrypt(note._id.toString())
+      _id      : note._id.toString()
     , text     : note.text
     , parsed   : Markdown.parse(note.text)
     , user_id  : note.user_id

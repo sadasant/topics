@@ -47,18 +47,7 @@ controller.index = function(req, res) {
       console.log('Error finding topics for user: ', user)
       return done()
     }
-    var topic
-      , i = 0
-
-    for (; topic = _topics[i]; i++) {
-      topics.push({
-        _id     : app.utils.encrypt(topic._id.toString())
-      , name    : topic.name
-      , user_id : topic.user_id
-      , stats   : topic.stats
-      })
-    }
-
+    topics = _topics
     done()
   }
 
@@ -198,7 +187,7 @@ controller.twitter_callback = function(req, res) {
 // GET /:screen_name/topic/:topic_id
 controller.public_topic = function(req, res) {
   var screen_name = req.params.screen_name
-    , topic_id    = app.utils.decrypt(req.params.topic_id)
+    , topic_id    = req.params.topic_id
     , user
     , topic
 
@@ -235,7 +224,7 @@ controller.public_topic = function(req, res) {
 
     for (; note = _notes[i]; i++) {
       notes.push({
-        _id      : app.utils.encrypt(note._id.toString())
+        _id      : note._id.toString()
       , text     : note.text
       , parsed   : Markdown.parse(note.text)
       , user_id  : note.user_id

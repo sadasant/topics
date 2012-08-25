@@ -61,7 +61,7 @@ Note.statics.create = function(_note, callback) {
       return callback('User Not Found')
     }
     user = _user
-    db.topics.findOne({ _id : app.utils.decrypt(_note.topic_id), user_id : _note.user_id }, foundTopic)
+    db.topics.findOne({ _id : _note.topic_id, user_id : _note.user_id }, foundTopic)
   }
 
   function foundTopic(err, _topic) {

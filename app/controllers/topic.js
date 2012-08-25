@@ -24,7 +24,7 @@ module.exports = function(_app) {
 
 // GET /api/1/:screen_name/topic/:_id
 controller.get_topic = function(req, res) {
-  var topic_id    = app.utils.decrypt(req.params._id)
+  var topic_id    = req.params._id
     , screen_name = req.params.screen_name
     , user        = req.session.user
 
@@ -40,7 +40,7 @@ controller.get_topic = function(req, res) {
       return sendError(500, err, res)
     }
     res.send({
-      _id     : app.utils.encrypt(_topic._id.toString())
+      _id     : _topic._id
     , name    : _topic.name
     , user_id : _topic.user_id
     , stats   : _topic.stats
@@ -61,29 +61,15 @@ controller.get_topics = function(req, res) {
 
   db.topics.find({ user_id : user.user_id }, foundTopics)
 
-  function foundTopics(err, _topics) {
+  function foundTopics(err, topics) {
     if (err) {
       return sendError(500, err, res)
     }
-    var topics = []
-      , topic
-      , i = 0
 
-    // Sorting topics
-    _topics = _topics.sort(function(a, b) {
+    // Sending sorted topics
+    res.send(topics.sort(function(a, b) {
       return a.position - b.position
-    })
-
-    for (; topic = _topics[i]; i++) {
-      topics.push({
-        _id     : app.utils.encrypt(topic._id.toString())
-      , name    : topic.name
-      , user_id : topic.user_id
-      , stats   : topic.stats
-      })
-    }
-
-    res.send(topics)
+    }))
   }
 }
 
@@ -93,14 +79,6 @@ controller.sort_topics = function(req, res) {
   var screen_name = req.params.screen_name
     , positions   = req.body.positions
     , user        = req.session.user
-
-  try {
-    positions = positions.map(function(e) {
-      return app.utils.decrypt(e)
-    })
-  } catch(e) {
-    return res.send('[]')
-  }
 
   if (screen_name !== user.screen_name) {
     // This is not the logged in user
@@ -159,7 +137,7 @@ controller.create_topic = function(req, res) {
       return sendError(500, err, res)
     }
     res.send({
-      _id     : app.utils.encrypt(topic._id.toString())
+      _id     : topic._id
     , name    : topic.name
     , user_id : topic.user_id
     , stats   : topic.stats
@@ -173,7 +151,7 @@ controller.delete_topic = function(req, res) {
   var user        = req.session.user
     , screen_name = user.screen_name
     , user_id     = user.user_id
-    , _id         = app.utils.decrypt(req.params._id)
+    , _id         = req.params._id
 
   if (!(user_id && screen_name === req.params.screen_name)) {
     return sendError(401, 'Seems like you\'re not logged in!', res)
@@ -217,7 +195,7 @@ controller.update_topic = function(req, res) {
   var user        = req.session.user
     , screen_name = user.screen_name
     , user_id     = user.user_id
-    , _id         = app.utils.decrypt(req.params._id)
+    , _id         = req.params._id
     , topic
 
   // New values
@@ -246,7 +224,7 @@ controller.update_topic = function(req, res) {
       return sendError(500, err, res)
     }
     res.send({
-      _id      : app.utils.encrypt(topic._id.toString())
+      _id      : topic._id
     , name     : topic.name
     , user_id  : topic.user_id
     , stats    : topic.stats
@@ -260,7 +238,7 @@ controller.email_topic = function(req, res) {
   var user        = req.session.user
     , screen_name = user.screen_name
     , user_id     = user.user_id
-    , _id         = app.utils.decrypt(req.params._id)
+    , _id         = req.params._id
     , topic
     , notes
     , smtp
@@ -310,12 +288,13 @@ controller.email_topic = function(req, res) {
     if (err) {
       return sendError(500, err, res)
     }
-    notes = _notes
+    notes = _notes.sort(function(a, b) {
+      return a.position - b.position
+    })
     var locals = {
       user  : user
     , topic : topic
     , notes : notes.map(function(e) { e.parsed = Markdown.parse(e.text); return e })
-    , encrypted_id : req.params._id
     }
     fs.readFile(__dirname + '/../../views/email.jade', 'utf-8', function(err, data) {
       if (err) {

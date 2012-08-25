@@ -95,7 +95,8 @@ button::-moz-focus-inner{border:0;padding:0}
 #box #fulltopic .note .text h3{font-size:12px}
 #box #fulltopic .note .text ul{list-style:disc}
 #box #fulltopic .note .text ul,#box #fulltopic .note .text ol{padding-left:20px;margin:5px 0 14px}
-#box #fulltopic .note .text li{list-style:inherit}
+#box #fulltopic .note .text li{list-style:inherit;}
+#box #fulltopic .note .text li p{margin:0}
 #box #fulltopic .note .text blockquote{padding:10px;-webkit-border-radius:3px;border-radius:3px;border-left:1px solid #888;font-style:italic;background:rgba(170,170,170,0.1);margin-bottom:10px}
 #box #fulltopic .note .text p > code{background:rgba(170,170,170,0.1);-webkit-border-radius:2px;border-radius:2px;padding:0 3px;font-family:monospace;font-size:11px;border:1px solid #e5e5e5}
 #box #fulltopic .note .text pre{background:rgba(170,170,170,0.1);border-left:1px solid #2a3732;-webkit-border-radius:3px;border-radius:3px;padding:5px 10px;margin:10px 0;overflow-x:hidden;}

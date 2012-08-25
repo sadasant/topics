@@ -20,7 +20,7 @@ p
   | You can read more about 
   em topics
   |  
-  a(href='http://topics.sadasant.com/sadasant/topic/89bfef93da3549baface0b8aa34fe63578b8ddd70eee79dcd3910ecd57ce9b0c') here
+  a(href='http://topics.sadasant.com/sadasant/topic/CODIMOS') here
   | .
 
 
@@ -29,7 +29,7 @@ hr
 center
   h1
     em
-      a(href='http://topics.sadasant.com/' + user.screen_name + '/topic/' + encrypted_id)= topic.name
+      a(href='http://topics.sadasant.com/' + user.screen_name + '/topic/' + topic._id)= topic.name
 - each note in notes
   p!= note.parsed
 
@@ -40,7 +40,8 @@ br
 i The Source:
 hr
 - each note in notes
-  blockquote= note.text
+  pre
+    code= note.text
 
 br
 p

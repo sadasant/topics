@@ -22,7 +22,7 @@ module.exports = function(_app) {
 }
 
 Topic = new Schema({
-  _id         : ObjectId
+  _id         : { type : String, index : true }
 , name        : { type : String }
 , user_id     : { type : String, index : true }
 , stats       : {
@@ -43,6 +43,7 @@ Topic.statics.create = function(_topic, callback) {
   var date = new Date()
     , topic
     , user
+    , shortcode
 
   if (!db) {
     db = app.server.set('db')
@@ -65,7 +66,20 @@ Topic.statics.create = function(_topic, callback) {
       return callback('User Not Found')
     }
     user = _user
-    db.topics.count({ user_id : user.user_id }, countedTopics)
+    getShortcode()
+  }
+
+  function getShortcode() {
+    shortcode = app.utils.shortcode()
+    db.topics.findOne({ _id : shortcode }, repeatedShortcode)
+  }
+
+  function repeatedShortcode(err, topic) {
+    if (err || topic) {
+      getShortcode()
+    } else {
+      db.topics.count({ user_id : user.user_id }, countedTopics)
+    }
   }
 
   function countedTopics(err, n_of_topics) {
@@ -73,7 +87,8 @@ Topic.statics.create = function(_topic, callback) {
       return callback('You have more than 50 Topics!!!')
     }
     topic = new db.topics({
-      name       : noXSS(_topic.name)
+      _id        : shortcode
+    , name       : noXSS(_topic.name)
     , user_id    : user.user_id
     , position   : n_of_topics
     , created_at : date

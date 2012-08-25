@@ -2,8 +2,6 @@
 // by Daniel Rodríguez
 // MIT Licensed
 
-const crypto = require('crypto')
-
 var utils = {}
   , secret
 
@@ -25,20 +23,27 @@ utils.sendError = function(code, msg, res) {
 }
 
 
-utils.encrypt = function(text) {
-  var cipher  = crypto.createCipher('AES-128-CBC', secret.cypher_pass)
-    , hex     = cipher.update(text, 'utf8', 'hex')
-  return hex += cipher.final('hex')
-}
+// Shortcode function
+// a slightly modified version of
+// the original shortcode function
+// for JS Bin written by Remy Sharp
+utils.shortcode = function() {
+  var vowels        = 'aeiou'
+    , consonants    = 'bcdfghjklmnpqrstvwxyz'
+    , i             = 0
+    , l             = 7
+    , word          = ''
+    , letter
+    , set
 
-
-utils.decrypt  = function(hex) {
-  var decipher = crypto.createDecipher('AES-128-CBC', secret.cypher_pass)
-    , utf8     = decipher.update(hex, 'hex', 'utf8')
-  try {
-    utf8 += decipher.final('utf8')
-  } catch(e) {
-    console.log(e)
+  for (; i < l; i += 1) {
+    set    = (i%2 === 0) ? consonants : vowels
+    letter = set[(Math.random() * set.length) >> 0]
+    if (Math.random() * 2 >> 0) {
+      letter = letter.toUpperCase()
+    }
+    word += letter
   }
-  return utf8
+
+  return word
 }
