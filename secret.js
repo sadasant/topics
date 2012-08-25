@@ -1,14 +1,37 @@
+// example_secrets.js
+// ==================
+//
+// Here we store all the private values that are used by
+// topics to authenticate with twitter, send emails and
+// handle other information, such as sessions storage.
+//
+
+
+// Mongodb secrets
+// ---------------
+//
+
 exports.mongo_url = 'mongodb://user:pass@stuffhere.mongolab.com:PORT/database'
+
+
+// E-mail secrets
+// --------------
+//
 
 exports.mail_to = 'you@you.me'
 
 exports.smtp = {
-  service : "Email Provider"
+  service : 'Email Provider'
 , auth : {
-    user : "user@provider.com"
-  , pass : "password"
+    user : 'user@provider.com'
+  , pass : 'password'
   }
 }
+
+
+// Twitter OAuth secrets
+// ---------------------
+//
 
 exports.twitter = {
   consumer_key    : 'your key'
@@ -16,6 +39,9 @@ exports.twitter = {
 , callback        : process.env.NODE_ENV === 'production' ? 'http://my.custom.url' : 'http://127.0.0.1:' + (process.env.app_port || process.env.PORT || 5000)
 }
 
-exports.session   = 'session_secret'
 
-exports.cypher_pass = 'passphrase to encrypt the topics _ids'
+// Sessions secrets
+// ----------------
+//
+
+exports.session   = 'session_secret'
