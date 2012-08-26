@@ -50,7 +50,6 @@ button::-moz-focus-inner
 #box
   margin 0 auto 0
   width 700px
-
   #welcome
     .what
       color #bbb
@@ -91,8 +90,10 @@ button::-moz-focus-inner
       box-shadow inset 0 0 30px #00ddff
       color white
       font-weight bold
-      padding 10px
       font-size 16px
+      li
+        display inline-block
+        padding 10px 20px
     .buttom:hover
       background #0099dd
       text-shadow 0 1px 1px #0077bb
@@ -103,6 +104,7 @@ button::-moz-focus-inner
     border-radius 20px
     background #f0f0f0
     box-shadow inset 0 10px 30px #fff
+    text-shadow 1px 1px 0 white
     padding 20px 0 10px
     #header
       text-shadow 1px 1px 0px rgba(#99eeff, .5)
@@ -162,7 +164,7 @@ button::-moz-focus-inner
         padding 20px
         em
           color #777
-          text-shadow 1px 1px 0px rgba(#99eeff, .5)
+          text-shadow 1px 1px 0 rgba(#99eeff, .5)
     h2
       font-family 'Quando', serif
       font-weight bold
@@ -171,6 +173,7 @@ button::-moz-focus-inner
       margin 0 0 0 30px
     #topics, #notes
       padding 0 20px
+      text-shadow none
       .topic, .newTopic, .newNote, .sendMail
         background rgba(#fff, .7)
         margin 10px 0
@@ -448,8 +451,6 @@ button::-moz-focus-inner
         line-height 18px
         p
           margin 0 0 8px
-        p:last-child, ul:last-child
-          margin 0
         em
           font-style italic
         h1, h2, h3
@@ -475,6 +476,10 @@ button::-moz-focus-inner
           list-style inherit
           p
             margin 0
+        li:last-child
+          margin-bottom 5px
+        p:last-child, ul:last-child
+          margin 0
         blockquote
           padding 10px
           border-radius 3px
@@ -583,6 +588,8 @@ button::-moz-focus-inner
           text-shadow 1px 1px 0px rgba(#99eeff, .5)
         hr
           border 1px solid #888
+        img
+          border 10px solid #EAE4BD
       .count
         color #CCC493
       .del, .save, .edit, .cancel
@@ -619,7 +626,7 @@ button::-moz-focus-inner
     .newNote
       .count
         position absolute
-        margin 30px 0 0 576px !important
+        margin 30px 0 0 15px !important
       .text
         width 550px !important
         color #777
@@ -642,13 +649,10 @@ button::-moz-focus-inner
         margin-top -3px
         margin-bottom -4px
     .buttom
-      width 680px
+      width 700px
       position absolute
       margin-left -1px
       margin-top 5px
-      li
-        display inline-block
-        padding 0 20px
       a:hover
         text-shadow 0 0 1px #0099dd, 0 0 5px white, 0 0 15px white
 
@@ -751,3 +755,110 @@ button::-moz-focus-inner
       border-top 1px solid #ccc
     .no
       float right
+
+@media screen and (max-width: 687px)
+  #box
+    min-width 350px
+    width 100%
+    #profile
+      #topics
+        .topic
+          .name
+            width 66%
+        .newTopic
+          .name
+            width 63%
+        #loading
+          width 94%
+    #fulltopic
+      .buttom
+        min-width 350px
+        width 100%
+      .topicname
+        h2
+          width 80%
+        .edit, .del, .save, .cancel
+          float right
+          margin 1px 32px 10px 0
+          position relative
+        .del, .save
+          clear both
+        .editname
+          width 70%
+        .count
+          margin -15px 0 0 68%
+      #tips
+        width 96% !important
+      #notes
+        .note
+          .count
+            right 0
+            margin 3px 170px 0 0
+          .save, .del, .load
+            margin -1px 0 0
+            float right
+            position relative
+          .load
+            margin-top 8px
+          .cancel
+            margin-bottom 14px
+          .editbox
+            width 96% !important
+          .text
+            width 98% !important
+            border-top 1px dashed #EEE
+            margin-top 10px !important
+            padding-top 10px
+        .note:hover
+          .text
+            border-top 1px dashed #EAE4BD
+        .newNote
+          height 133px
+          textarea
+            width 96% !important
+          .count
+            float right
+            position relative
+            margin 120px 75px 0 -135px !important
+          .load
+            margin-top 18px
+          .new
+            margin 10px 5px
+        .sendMail
+          span
+            visibility hidden
+            float left
+            width 35px
+          span:before
+            content 'Email:'
+            visibility visible
+          input
+            width 53%
+            margin-right -13px
+        #loading
+          width 94%
+
+@media screen and (max-width: 450px)
+  #box
+    #profile
+      #topics
+        .topic
+          .notes
+            display none
+          .name
+            width 75%
+        .newTopic
+          .name
+            width 50%
+    #fulltopic
+      .topicname
+        .editname
+          width 63%
+        .count
+          margin -15px 0 0 61%
+      .note
+        .text
+          img
+            max-width 95%
+            min-width 95%
+            width 95%
