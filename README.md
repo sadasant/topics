@@ -6,7 +6,7 @@
 
 ## Some details
 
-**topics** is an spare-time-2-weeks project made by Daniel Rodríguez [@sadasant](https://mobile.twitter.co/sadasant) for fun and knowledge. It is built entirely in *JavaScript*, with Open Source frameworks and libraries such as [NodeJS](http://nodejs.org/), [jQuery](http://jquery.com/), [Backbone](http://documentcloud.github.com/backbone/), [Underscore](documentcloud.github.com/underscore/), [RequireJS](http://requirejs.org/), [Express](http://expressjs.com/), [Jade](https://github.com/visionmedia/jade), [Stylus](http://learnboost.github.com/stylus/) and more!
+**topics** is an spare-time project made by Daniel Rodríguez [@sadasant](https://mobile.twitter.co/sadasant) for fun and knowledge. It is built entirely in *JavaScript*, with Open Source frameworks and libraries such as [NodeJS](http://nodejs.org/), [jQuery](http://jquery.com/), [Backbone](http://documentcloud.github.com/backbone/), [Underscore](documentcloud.github.com/underscore/), [RequireJS](http://requirejs.org/), [Express](http://expressjs.com/), [Jade](https://github.com/visionmedia/jade), [Stylus](http://learnboost.github.com/stylus/) and more!
 
 ## How to run it
 
