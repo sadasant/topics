@@ -31,7 +31,7 @@ html
         #notes
           - each note in notes
             .note
-              .text!= note.parsed.replace('<img', '<img onclick="window.open(this.src)"')
+              .text(style='margin-top:0 !important; padding-top: 0; border-top: 0')!= note.parsed.replace('<img', '<img onclick="window.open(this.src)"')
         ul.buttom
           li Share it on:
           li
