@@ -1,4 +1,4 @@
-// example_secrets.js
+// secrets.js
 // ==================
 //
 // Here we store all the private values that are used by

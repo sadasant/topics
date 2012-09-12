@@ -1,13 +1,4 @@
-| Connected!
-- if (popup)
-  #popup
+body(style="color:#666;font-family:sans-serif;text-align:center;padding-top:30px;")
+  | Connected!
 script
-  var time = 500
-    , popup = document.getElementById('popup')
-  setTimeout(function(){
-    if (popup) {
-      window.close()
-    } else {
-      window.location.href = '/'
-    }
-  }, time)
+  window.location.href = '/'

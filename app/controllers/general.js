@@ -71,17 +71,9 @@ controller.index = function(req, res) {
 // /connect
 controller.connect = function(req, res) {
 
-  // If popup is true is because
-  // it was called as a window.open
-  // from backbone, so the view
-  // must close itself.
-  req.session.popup = req.query.popup
-
   if (req.session.user) {
     // The User is already logged
-    return res.render('connect', {
-      popup : req.session.popup
-    })
+    return res.render('connect')
   }
 
   app.oa.getOAuthRequestToken(gotOAuthRequestToken)
@@ -176,9 +168,7 @@ controller.twitter_callback = function(req, res) {
     , twitter     : s.user.twitter
     , stats       : s.user.stats
     }
-    res.render('connect', {
-      popup : req.session.popup
-    })
+    res.render('connect')
   }
 }
 

@@ -93,7 +93,8 @@ button::-moz-focus-inner{border:0;padding:0}
 #box #fulltopic .note .text li p{margin:0}
 #box #fulltopic .note .text li:last-child{margin-bottom:5px}
 #box #fulltopic .note .text p:last-child,#box #fulltopic .note .text ul:last-child{margin:0}
-#box #fulltopic .note .text blockquote{padding:10px;-webkit-border-radius:3px;border-radius:3px;border-left:1px solid #888;font-style:italic;background:rgba(170,170,170,0.1);margin-bottom:10px}
+#box #fulltopic .note .text blockquote{padding:10px;-webkit-border-radius:3px;border-radius:3px;border-left:1px solid #888;font-style:italic;background:rgba(170,170,170,0.1);margin-bottom:10px;overflow-x:hidden}
+#box #fulltopic .note .text blockquote:hover{overflow-x:scroll}
 #box #fulltopic .note .text p > code{background:rgba(170,170,170,0.1);-webkit-border-radius:2px;border-radius:2px;padding:0 3px;font-family:monospace;font-size:11px;border:1px solid #e5e5e5}
 #box #fulltopic .note .text pre{background:rgba(170,170,170,0.1);border-left:1px solid #2a3732;-webkit-border-radius:3px;border-radius:3px;padding:5px 10px;margin:10px 0;overflow-x:hidden;}
 #box #fulltopic .note .text pre code{font-family:monospace;font-size:11px}
@@ -132,7 +133,7 @@ button::-moz-focus-inner{border:0;padding:0}
 #box.public #fulltopic .topicname{padding-bottom:4px}
 #box.public #fulltopic .buttom{width:606px}
 #box.public #fulltopic .text{min-height:0}
-#by{margin:10px auto 0;width:300px;text-align:center;font-size:11px;color:#888;}
+#by{margin:10px auto 0;width:auto;text-align:center;font-size:11px;color:#888;}
 #by a{color:#aaa}
 #by a:hover{text-decoration:underline}
 .hide{display:none}
@@ -142,39 +143,64 @@ button::-moz-focus-inner{border:0;padding:0}
 #confirmbox #confirm .yes,#confirmbox #confirm .no{background:rgba(255,255,255,0.7);padding:5px 10px;font-size:12px;font-weight:bold;text-shadow:1px 1px 0 #fff;text-align:center;-webkit-border-radius:5px;border-radius:5px;border:1px solid #e9e9e9;border-bottom:1px solid #e0e0e0;-webkit-box-shadow:inset 0 -5px 10px rgba(221,221,221,0.3);box-shadow:inset 0 -5px 10px rgba(221,221,221,0.3);width:124px;display:inline-block;margin-top:20px;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}
 #confirmbox #confirm .yes:hover,#confirmbox #confirm .no:hover{cursor:pointer;color:#fff;background:#ddd;text-shadow:0 1px 1px #888;border:1px solid #ddd;border-left:1px solid #ccc;border-top:1px solid #ccc}
 #confirmbox #confirm .no{float:right}
-@media screen and (max-width: 687px){#box{min-width:350px;width:100%;}
-#box #profile #topics .topic .name{width:66%}
-#box #profile #topics .newTopic .name{width:63%}
-#box #profile #topics #loading{width:94%}
-#box #fulltopic .buttom{min-width:350px;width:100%}
-#box #fulltopic .topicname h2{width:80%}
-#box #fulltopic .topicname .edit,#box #fulltopic .topicname .del,#box #fulltopic .topicname .save,#box #fulltopic .topicname .cancel{float:right;margin:1px 32px 10px 0;position:relative}
-#box #fulltopic .topicname .del,#box #fulltopic .topicname .save{clear:both}
-#box #fulltopic .topicname .editname{width:70%}
-#box #fulltopic .topicname .count{margin:-15px 0 0 68%}
-#box #fulltopic #tips{width:96% !important}
-#box #fulltopic #notes .note .count{right:0;margin:3px 170px 0 0}
-#box #fulltopic #notes .note .save,#box #fulltopic #notes .note .del,#box #fulltopic #notes .note .load{margin:-1px 0 0;float:right;position:relative}
-#box #fulltopic #notes .note .load{margin-top:8px}
-#box #fulltopic #notes .note .cancel{margin-bottom:14px}
-#box #fulltopic #notes .note .editbox{width:96% !important}
-#box #fulltopic #notes .note .text{width:98% !important;border-top:1px dashed #eee;margin-top:10px !important;padding-top:10px}
-#box #fulltopic #notes .note:hover .text{border-top:1px dashed #eae4bd}
-#box #fulltopic #notes .newNote{height:133px;}
-#box #fulltopic #notes .newNote textarea{width:96% !important}
-#box #fulltopic #notes .newNote .count{float:right;position:relative;margin:120px 75px 0 -135px !important}
-#box #fulltopic #notes .newNote .load{margin-top:18px}
-#box #fulltopic #notes .newNote .new{margin:10px 5px}
-#box #fulltopic #notes .sendMail span{visibility:hidden;float:left;width:35px}
-#box #fulltopic #notes .sendMail span:before{content:'Email:';visibility:visible}
-#box #fulltopic #notes .sendMail input{width:53%;margin-right:-13px}
-#box #fulltopic #notes #loading{width:94%}
-}@media screen and (max-width: 450px){#box #profile #topics .topic .notes{display:none}
-#box #profile #topics .topic .name{width:75%}
-#box #profile #topics .newTopic .name{width:50%}
-#box #fulltopic .topicname .editname{width:63%}
-#box #fulltopic .topicname .count{margin:-15px 0 0 61%}
-#box #fulltopic .note .text img{max-width:95%;min-width:95%;width:95%}
+@media screen and (max-width: 687px){#box,#box.public{min-width:180px;width:100%;}
+#box #welcome .what,#box.public #welcome .what{position:absolute;right:0}
+#box #profile #topics .topic .name,#box.public #profile #topics .topic .name{width:66%}
+#box #profile #topics .newTopic .name,#box.public #profile #topics .newTopic .name{width:63%}
+#box #profile #topics #loading,#box.public #profile #topics #loading{width:94%}
+#box #fulltopic .buttom,#box.public #fulltopic .buttom{min-width:350px;width:100%}
+#box #fulltopic .topicname h2,#box.public #fulltopic .topicname h2{width:80%}
+#box #fulltopic .topicname .edit,#box.public #fulltopic .topicname .edit,#box #fulltopic .topicname .del,#box.public #fulltopic .topicname .del,#box #fulltopic .topicname .save,#box.public #fulltopic .topicname .save,#box #fulltopic .topicname .cancel,#box.public #fulltopic .topicname .cancel{float:right;margin:1px 32px 10px 0;position:relative}
+#box #fulltopic .topicname .del,#box.public #fulltopic .topicname .del,#box #fulltopic .topicname .save,#box.public #fulltopic .topicname .save{clear:both}
+#box #fulltopic .topicname .editname,#box.public #fulltopic .topicname .editname{width:70%}
+#box #fulltopic .topicname .count,#box.public #fulltopic .topicname .count{margin:-15px 0 0 68%}
+#box #fulltopic #tips,#box.public #fulltopic #tips{width:96% !important}
+#box #fulltopic #notes .note .count,#box.public #fulltopic #notes .note .count{right:0;margin:3px 170px 0 0}
+#box #fulltopic #notes .note .save,#box.public #fulltopic #notes .note .save,#box #fulltopic #notes .note .del,#box.public #fulltopic #notes .note .del,#box #fulltopic #notes .note .load,#box.public #fulltopic #notes .note .load{margin:-1px 0 0;float:right;position:relative}
+#box #fulltopic #notes .note .load,#box.public #fulltopic #notes .note .load{margin-top:8px}
+#box #fulltopic #notes .note .cancel,#box.public #fulltopic #notes .note .cancel{margin-bottom:14px}
+#box #fulltopic #notes .note .editbox,#box.public #fulltopic #notes .note .editbox{width:96% !important}
+#box #fulltopic #notes .note .text,#box.public #fulltopic #notes .note .text{width:98% !important;border-top:1px dashed #eee;margin-top:10px !important;padding-top:10px}
+#box #fulltopic #notes .note:hover .text,#box.public #fulltopic #notes .note:hover .text{border-top:1px dashed #eae4bd}
+#box #fulltopic #notes .newNote,#box.public #fulltopic #notes .newNote{height:133px;}
+#box #fulltopic #notes .newNote textarea,#box.public #fulltopic #notes .newNote textarea{width:96% !important}
+#box #fulltopic #notes .newNote .count,#box.public #fulltopic #notes .newNote .count{float:right;position:relative;margin:120px 75px 0 -135px !important}
+#box #fulltopic #notes .newNote .load,#box.public #fulltopic #notes .newNote .load{margin-top:18px}
+#box #fulltopic #notes .newNote .new,#box.public #fulltopic #notes .newNote .new{margin:10px 2px}
+#box #fulltopic #notes .sendMail span,#box.public #fulltopic #notes .sendMail span{visibility:hidden;float:left;width:35px}
+#box #fulltopic #notes .sendMail span:before,#box.public #fulltopic #notes .sendMail span:before{content:'Email:';visibility:visible}
+#box #fulltopic #notes .sendMail input,#box.public #fulltopic #notes .sendMail input{width:53%;margin-right:-13px}
+#box #fulltopic #notes #loading,#box.public #fulltopic #notes #loading{width:94%}
+}@media screen and (max-width: 450px){#by{margin-top:60px}
+#box #profile #header .title,#box.public #profile #header .title{padding-left:15px}
+#box #profile #header .user,#box.public #profile #header .user{float:left;margin:10px 0 0 14px;}
+#box #profile #header .user .bye,#box.public #profile #header .user .bye{margin:0;top:50px;right:15px}
+#box #profile #help,#box.public #profile #help{clear:both;}
+#box #profile #help p,#box.public #profile #help p{padding:11px 15px;font-size:12px}
+#box #profile #topics,#box.public #profile #topics{padding:0 10px;}
+#box #profile #topics .topic .notes,#box.public #profile #topics .topic .notes{display:none}
+#box #profile #topics .topic .name,#box.public #profile #topics .topic .name{width:75%}
+#box #profile #topics .topic .new,#box.public #profile #topics .topic .new,#box #profile #topics .topic .del,#box.public #profile #topics .topic .del,#box #profile #topics .topic .send,#box.public #profile #topics .topic .send{width:20px;height:20px;color:transparent;text-shadow:none;overflow:hidden}
+#box #profile #topics .topic .new:before,#box.public #profile #topics .topic .new:before,#box #profile #topics .topic .del:before,#box.public #profile #topics .topic .del:before,#box #profile #topics .topic .send:before,#box.public #profile #topics .topic .send:before{content:'x';display:inline-block;font-size:11px;color:#fff;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;text-shadow:0 1px 1px #888}
+#box #profile #topics .newTopic,#box.public #profile #topics .newTopic{padding-bottom:12px;}
+#box #profile #topics .newTopic .name,#box.public #profile #topics .newTopic .name{width:90%;display:block;margin:-3px auto 0}
+#box #profile #topics .newTopic .count,#box.public #profile #topics .newTopic .count{margin-top:10px}
+#box #profile #topics .newTopic .new,#box.public #profile #topics .newTopic .new{margin-top:7px}
+#box #profile #topics #loading,#box.public #profile #topics #loading{width:90%}
+#box #fulltopic .topicname h2,#box.public #fulltopic .topicname h2{width:50%;margin-right:10px}
+#box #fulltopic .topicname .editname,#box.public #fulltopic .topicname .editname{width:63%}
+#box #fulltopic .topicname .count,#box.public #fulltopic .topicname .count{margin:-15px 0 0 61%}
+#box #fulltopic #notes,#box.public #fulltopic #notes{padding:0 10px;}
+#box #fulltopic #notes .note .text,#box.public #fulltopic #notes .note .text{text-align:left;font-size:11px;line-height:14px;}
+#box #fulltopic #notes .note .text h1,#box.public #fulltopic #notes .note .text h1{font-size:18px;line-height:20px}
+#box #fulltopic #notes .note .text h2,#box.public #fulltopic #notes .note .text h2{font-size:14px;line-height:16px}
+#box #fulltopic #notes .note .text img,#box.public #fulltopic #notes .note .text img{max-width:95%;min-width:95%;width:95%;border-width:5px}
+#box #fulltopic #notes .newNote .text,#box.public #fulltopic #notes .newNote .text{width:91% !important;float:right}
+#box #fulltopic #notes .sendMail,#box.public #fulltopic #notes .sendMail{padding:8px 10px;height:23px;}
+#box #fulltopic #notes .sendMail span,#box.public #fulltopic #notes .sendMail span{display:none}
+#box #fulltopic #notes .sendMail input,#box.public #fulltopic #notes .sendMail input{float:left;margin:0}
+#box #fulltopic #notes .sendMail button,#box.public #fulltopic #notes .sendMail button{width:50%;width:40px !important;margin-top:1px !important}
+#box #fulltopic .buttom,#box.public #fulltopic .buttom{min-width:0}
 }@-moz-keyframes glow{0%{-webkit-box-shadow:inset 0 0 0 #0cf;box-shadow:inset 0 0 0 #0cf;background:#2a3732}
 90%{-webkit-box-shadow:inset 650px 0 0 #0cf;box-shadow:inset 650px 0 0 #0cf;background:#5d6a65}
 92%{-webkit-box-shadow:inset 650px 0 0 #9ef;box-shadow:inset 650px 0 0 #9ef;background:#2a3732}

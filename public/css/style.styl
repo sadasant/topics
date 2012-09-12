@@ -487,6 +487,9 @@ button::-moz-focus-inner
           font-style italic
           background rgba(#aaa,.1)
           margin-bottom 10px
+          overflow-x hidden
+        blockquote:hover
+          overflow-x scroll
         p > code
           background rgba(#aaa,.1)
           border-radius 2px
@@ -697,7 +700,7 @@ button::-moz-focus-inner
 
 #by
   margin 10px auto 0
-  width 300px
+  width auto
   text-align center
   font-size 11px
   color #888
@@ -757,9 +760,14 @@ button::-moz-focus-inner
       float right
 
 @media screen and (max-width: 687px)
-  #box
-    min-width 350px
+  #box, #box.public
+    min-width 180px
     width 100%
+    #welcome
+      .what
+        width 55px
+        position absolute
+        right 0
     #profile
       #topics
         .topic
@@ -777,11 +785,11 @@ button::-moz-focus-inner
       .topicname
         h2
           width 80%
-        .edit, .del, .save, .cancel
+        .edit, .del, .save, .cancel, .load
           float right
           margin 1px 32px 10px 0
           position relative
-        .del, .save
+        .del, .save, .load
           clear both
         .editname
           width 70%
@@ -817,13 +825,13 @@ button::-moz-focus-inner
           textarea
             width 96% !important
           .count
-            float right
-            position relative
-            margin 120px 75px 0 -135px !important
+            position absolute
+            right 91px
+            padding-top 90px
           .load
             margin-top 18px
           .new
-            margin 10px 5px
+            margin 10px 2px
         .sendMail
           span
             visibility hidden
@@ -839,26 +847,99 @@ button::-moz-focus-inner
           width 94%
 
 @media screen and (max-width: 450px)
-  #box
+  #by
+    margin-top 60px
+  #box, #box.public
     #profile
+      #header
+        .title
+          padding-left 15px
+        .user
+          float left
+          margin 10px 0 0 14px
+          .bye
+            margin 0
+            top 50px
+            right 15px
+      #help
+        clear both
+        p
+         padding 11px 15px
+         font-size 12px
       #topics
+        padding 0 10px
         .topic
           .notes
             display none
           .name
             width 75%
+          .new, .del, .send
+            width 20px
+            height 20px
+            color transparent
+            text-shadow none
+            overflow hidden
+          .new:before, .del:before, .send:before
+            content 'x'
+            display inline-block
+            font-size 11px
+            color white
+            user-select none
+            text-shadow 0 1px 1px #888
         .newTopic
+          padding-bottom 12px
           .name
-            width 50%
+            width 90%
+            display block
+            margin -3px auto 0
+          .count
+            margin-top 10px
+          .new
+            margin-top 7px
+        #loading
+          width 90%
     #fulltopic
       .topicname
+        h2
+          width 50%
+          margin-right 10px
         .editname
-          width 63%
+          width 60%
         .count
-          margin -15px 0 0 61%
-      .note
-        .text
-          img
-            max-width 95%
-            min-width 95%
-            width 95%
+          margin -15px 0 0 53%
+      #notes
+        padding 0 10px
+        .note
+          .text
+            text-align left
+            font-size 11px
+            line-height 14px
+            h1
+              font-size 18px
+              line-height 20px
+            h2
+              font-size 14px
+              line-height 16px
+            img
+              max-width 95%
+              min-width 95%
+              width 95%
+              border-width 5px
+        .newNote
+          .text
+            width 91% !important
+            float right
+        .sendMail
+          padding 8px 10px
+          height 23px
+          span
+            display none
+          input
+            float left
+            margin 0
+          button
+            width 50%
+            width 40px !important
+            margin-top 1px !important
+      .buttom
+        min-width 0

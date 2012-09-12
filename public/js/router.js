@@ -45,37 +45,6 @@ define([
   FullTopicView.setConfirmView(confirmView)
 
 
-  // Once the #/connect URI is triggered,
-  // if we're not in a mobile browser, the
-  // popup window with the twitter login appears,
-  // and on the background, this method is executed.
-  // This triggers the User fetch method, which
-  // makes a GET request to the server.
-  // On Success, we go to the loadedUser function.
-  // On error, it logs the response and
-  // recurses over this same function.
-  function connectLoop(that, loop) {
-    var usr_loop = ''
-    if (loop) {
-      usr_loop = '?loop=1'
-    }
-    User.fetch({
-      loop    : loop
-    , url     : User.url() + usr_loop
-    , success : loadedUser
-    , error   : function(model, res, req) {
-        console.log('ERROR', res)
-        // Recurse if the request timesout
-        if (loop) {
-          setTimeout(function() {
-            connectLoop(that, loop)
-          }, 1000)
-        }
-      }
-    })
-  }
-
-
   // The user is loaded after the login button is clicked,
   // once the server responses, we remove the homeView and
   // navigate back to the root URI to create the profileView
@@ -95,7 +64,6 @@ define([
   Router = B.Router.extend({
     routes : {
       ''        : 'home'
-    , 'connect' : 'connect'
     , 'logout'  : 'logout'
     , ':screen_name/topic/:_id' : 'showTopic'
     }
@@ -149,33 +117,6 @@ define([
         delete this.homeView
         this.profileView = new ProfileView({ model : User })
         this.profileView.render()
-      }
-    }
-
-    // ## /connect
-    // This is triggered when the customer clicks the
-    // `Connect with Twitter` button at the home view.
-    // It tries to make sure we're not logged yet.
-    // In mobile browsers it will redirect the
-    // user to the /connect URL, in the rest of the
-    // browsers it will open a popup winodw which will
-    // work exactly like redirecting to the /connect URL,
-    // That page will begin the OAuth dance with Twitter.
-    // Why popups? I wanted to unddderstand how to make auths
-    // with long polling.
-  , connect : function() {
-      if (this.profileView) {
-        return this.navigate('', trigger)
-      }
-      var that = this
-        , left = $(window).width() / 2 - 250
-      if (window.is_mobile) {
-        // Some mobile browsers doesn't like popups.
-        window.location.href = '/connect'
-      } else {
-        // Connecting with Twitter
-        window.open('/connect?popup=1', 'sharer', 'width=500,height=300,top=150,left= ' + left + ',personalbar=0,toolbar=0,scrollbars=1,resizable=1')
-        connectLoop(that, true)
       }
     }
 
