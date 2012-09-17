@@ -1,1 +1,0 @@
-define("app",["backbone","router"],function(e,t){function n(n){n=new t,e.history.start()}return{init:n}})
