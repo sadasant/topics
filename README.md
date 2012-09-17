@@ -23,13 +23,11 @@ the `public/` route for static files, to the `production/` folder, which has all
 
 I'm using [this](https://github.com/sadasant/dotfiles/blob/master/.jshintrc) .jshintrc :)
 
-## Rebuild the public/ source
+## Rebuild the public/js source
 
 - Install RequireJS with node: `npm install -g requirejs`
 
-- Go to the public folder and run `r.js -o app.build.js`.
-
-- If you want to make just CSS updates, you can run `cp css/style.styl ../production/css/style.styl`.
+- Go to the root and run `r.js -o app.build.js`.
 
 If you're interested on learning about RequireJS optimization,
 I recommend you to go to the official documentation: <http://requirejs.org/docs/optimization.html>

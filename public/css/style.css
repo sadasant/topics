@@ -144,14 +144,14 @@ button::-moz-focus-inner{border:0;padding:0}
 #confirmbox #confirm .yes:hover,#confirmbox #confirm .no:hover{cursor:pointer;color:#fff;background:#ddd;text-shadow:0 1px 1px #888;border:1px solid #ddd;border-left:1px solid #ccc;border-top:1px solid #ccc}
 #confirmbox #confirm .no{float:right}
 @media screen and (max-width: 687px){#box,#box.public{min-width:180px;width:100%;}
-#box #welcome .what,#box.public #welcome .what{position:absolute;right:0}
+#box #welcome .what,#box.public #welcome .what{width:55px;position:absolute;right:0}
 #box #profile #topics .topic .name,#box.public #profile #topics .topic .name{width:66%}
 #box #profile #topics .newTopic .name,#box.public #profile #topics .newTopic .name{width:63%}
 #box #profile #topics #loading,#box.public #profile #topics #loading{width:94%}
 #box #fulltopic .buttom,#box.public #fulltopic .buttom{min-width:350px;width:100%}
 #box #fulltopic .topicname h2,#box.public #fulltopic .topicname h2{width:80%}
-#box #fulltopic .topicname .edit,#box.public #fulltopic .topicname .edit,#box #fulltopic .topicname .del,#box.public #fulltopic .topicname .del,#box #fulltopic .topicname .save,#box.public #fulltopic .topicname .save,#box #fulltopic .topicname .cancel,#box.public #fulltopic .topicname .cancel{float:right;margin:1px 32px 10px 0;position:relative}
-#box #fulltopic .topicname .del,#box.public #fulltopic .topicname .del,#box #fulltopic .topicname .save,#box.public #fulltopic .topicname .save{clear:both}
+#box #fulltopic .topicname .edit,#box.public #fulltopic .topicname .edit,#box #fulltopic .topicname .del,#box.public #fulltopic .topicname .del,#box #fulltopic .topicname .save,#box.public #fulltopic .topicname .save,#box #fulltopic .topicname .cancel,#box.public #fulltopic .topicname .cancel,#box #fulltopic .topicname .load,#box.public #fulltopic .topicname .load{float:right;margin:1px 32px 10px 0;position:relative}
+#box #fulltopic .topicname .del,#box.public #fulltopic .topicname .del,#box #fulltopic .topicname .save,#box.public #fulltopic .topicname .save,#box #fulltopic .topicname .load,#box.public #fulltopic .topicname .load{clear:both}
 #box #fulltopic .topicname .editname,#box.public #fulltopic .topicname .editname{width:70%}
 #box #fulltopic .topicname .count,#box.public #fulltopic .topicname .count{margin:-15px 0 0 68%}
 #box #fulltopic #tips,#box.public #fulltopic #tips{width:96% !important}
@@ -164,7 +164,7 @@ button::-moz-focus-inner{border:0;padding:0}
 #box #fulltopic #notes .note:hover .text,#box.public #fulltopic #notes .note:hover .text{border-top:1px dashed #eae4bd}
 #box #fulltopic #notes .newNote,#box.public #fulltopic #notes .newNote{height:133px;}
 #box #fulltopic #notes .newNote textarea,#box.public #fulltopic #notes .newNote textarea{width:96% !important}
-#box #fulltopic #notes .newNote .count,#box.public #fulltopic #notes .newNote .count{float:right;position:relative;margin:120px 75px 0 -135px !important}
+#box #fulltopic #notes .newNote .count,#box.public #fulltopic #notes .newNote .count{position:absolute;right:91px;padding-top:90px}
 #box #fulltopic #notes .newNote .load,#box.public #fulltopic #notes .newNote .load{margin-top:18px}
 #box #fulltopic #notes .newNote .new,#box.public #fulltopic #notes .newNote .new{margin:10px 2px}
 #box #fulltopic #notes .sendMail span,#box.public #fulltopic #notes .sendMail span{visibility:hidden;float:left;width:35px}
@@ -188,8 +188,8 @@ button::-moz-focus-inner{border:0;padding:0}
 #box #profile #topics .newTopic .new,#box.public #profile #topics .newTopic .new{margin-top:7px}
 #box #profile #topics #loading,#box.public #profile #topics #loading{width:90%}
 #box #fulltopic .topicname h2,#box.public #fulltopic .topicname h2{width:50%;margin-right:10px}
-#box #fulltopic .topicname .editname,#box.public #fulltopic .topicname .editname{width:63%}
-#box #fulltopic .topicname .count,#box.public #fulltopic .topicname .count{margin:-15px 0 0 61%}
+#box #fulltopic .topicname .editname,#box.public #fulltopic .topicname .editname{width:60%}
+#box #fulltopic .topicname .count,#box.public #fulltopic .topicname .count{margin:-15px 0 0 53%}
 #box #fulltopic #notes,#box.public #fulltopic #notes{padding:0 10px;}
 #box #fulltopic #notes .note .text,#box.public #fulltopic #notes .note .text{text-align:left;font-size:11px;line-height:14px;}
 #box #fulltopic #notes .note .text h1,#box.public #fulltopic #notes .note .text h1{font-size:18px;line-height:20px}

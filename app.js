@@ -64,10 +64,6 @@ var app      = {}
   , db       = mongoose.createConnection(secret.mongo_url)
   , oa
 
-  // Little hack to test minified files locally
-  , publ = process.env.app_port || process.env.PORT ? 'production' : 'public'
-
-
 oa = new OAuth(
      'https://api.twitter.com/oauth/request_token'
    , 'https://api.twitter.com/oauth/access_token'
@@ -109,9 +105,9 @@ server.configure(function() {
   server.use(express.methodOverride())
   server.set('views', __dirname + '/views')
   server.set('view engine', 'jade')
-  server.use(require('stylus').middleware({ src: __dirname + '/' + publ, compile: nibCompile }))
+  server.use(require('stylus').middleware({ src: __dirname + '/public', compile: nibCompile }))
   server.use(server.router)
-  server.use(express.static(__dirname + '/' + publ))
+  server.use(express.static(__dirname + '/public'))
   server.use(express.errorHandler())
   server.set('port', port)
   server.set('db', {
